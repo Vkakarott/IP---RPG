@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <stdbool.h> //biblioteca de valores booleanos(verdadeiro ou falso)
-#include <stdlib.h> //biblioteca que gera valores aleatorios
+#include <stdbool.h>
+#include <stdlib.h>
 #include <time.h>
 
 int main() {
-    srand(time(NULL)); // tempo atual
+    srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
 
     int jogar = 0;
     bool jogando = false;
@@ -13,7 +13,6 @@ int main() {
     int danoInimigo;
     int danoPlayer;
     int acao;
-    //array de stings
     char *arr[] = {
         "TROLL",
         "BRUXA",
@@ -35,7 +34,7 @@ int main() {
         printf("Obrigado por jogar!\n");
         return 0;
     }
-    // do while para rodar o codigo e depois testar a condicao
+
     do {
         printf("SELECIONE A AÇÃO\n");
         printf("[1] ATAQUE NORMAL\n");
