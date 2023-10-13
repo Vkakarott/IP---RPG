@@ -297,11 +297,11 @@ int main(){
         }
         if(arr[enemyIndex] == "GOLEM"){
         printf("%s USOU %s!\n", arr[enemyIndex], atksGolem[rand() % (sizeof(atksGolem) / sizeof(atksGolem[0]))]);
-        Sleep(1000)
+        Sleep(1000);
         }
         if(arr[enemyIndex] == "DRAGAO"){
         printf("%s USOU %s!\n", arr[enemyIndex], atksDragao[rand() % (sizeof(atksDragao) / sizeof(atksDragao[0]))]);
-        Sleep(1000)
+        Sleep(1000);
         }
         danoEnemy = (6-defesa)/(1+0.1*res);
         
