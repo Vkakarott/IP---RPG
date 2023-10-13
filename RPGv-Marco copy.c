@@ -64,7 +64,7 @@ void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual) {
     printf("] %d/%d\n", manaAtual, manaMax);
 }
 
-void hpEnemy(int enemyHP, int enemyHPMax){
+ void hpEnemy(int enemyHP, int enemyHPMax){
     int bar = 10;
     int barEny = (int)((double)enemyHP / enemyHPMax * bar);
     printf("HP INIMIGA: [");
@@ -78,12 +78,12 @@ void hpEnemy(int enemyHP, int enemyHPMax){
     printf("} %d/%d\n", enemyHP, enemyHPMax);
 }
 //HORA DO MEGAZORD
-void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque){
+void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP){
 if (magiaMenu = true)
 {
     switch(class) {
     case 1: //HABILIDADES DO GUERREIRO
-        printf("Escolha uma magia: [1] Golpe Ciclone(-%iMP) [2] Suga-Vidas (-%iMP) [3] Furia(-%iHP) [4] Descansar(+%iMP) [Outro Número] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/4, *manaMax);
+        printf("Escolha uma magia: [1] Golpe Ciclone(-%iMP) [2] Sifao (-%iMP) [3] Furia(-%iHP) [4] Descansar(+%iMP) [Outro Número] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/4, *manaMax);
         input("%i",&*acao);
         switch (*acao)
     {
@@ -95,7 +95,7 @@ if (magiaMenu = true)
                 printf("VOCÊ USOU GOLPE CICLONE E GASTOU %d MANA!\n", *manaMax*3/4);
                 Sleep(1000);
                 for (int i = 0; i < 4; i ++) {
-                printf("DANO: %i\n", dano);
+                printf("DANO: %i\n", dano/4);
                 Sleep(1000);
                 }
                 break;
@@ -136,72 +136,12 @@ if (magiaMenu = true)
         default:
             break;
         }
-    break;
-    case 2: //HABILIDADES DE PALADINO
-        printf("Escolha uma magia: [1] Investida de Escudo (-%iMP) [2] Rezar (-%iMP+%iHP) [3] Parede Inquebravel (-%iMP) [4] Protecao Divina(-%iMP) [Outro Número] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima*2/3, *manaMax/2, *manaMax/3);
-        input("%i",&*acao);
-        switch (*acao)
-    {
-        case 1:
-            if (*manaAtual >= 3/4**manaMax) {
-                *manaAtual -= 3/4**manaMax;
-                dano = 1.3 * *atkBase * (1+0.1 * *res);
-                *enemyHP -= dano;
-                printf("VOCE USOU INVESTIDA DE ESCUDO E GASTOU %d MANA!\n", *manaMax*3/4);
-                Sleep(1000);
-                printf("DANO: %i\n", dano);
-                Sleep(1000);
-                break;
-            } else {
-                printf("Sem mana suficiente\n");
-                break;
-            }
-        case 2:
-            if (*manaAtual >= *manaMax/2) {
-                *manaAtual -= *manaMax/2;
-                *HPAtual += *HPMaxima*2/3;
-                printf("VOCE REZOU, GASTOU %d DE MANA E RECEBEU %d DE HP\n", *manaMax/2, *HPMaxima*2/3);
-                Sleep(1000);
-                break;
-            }  else {
-                printf("Sem mana suficiente\n");
-                break;
-            }
-        case 3:
-            if (*manaAtual >= *manaMax/2) {
-                *manaAtual -= *manaMax/2;
-                *res += *manaMax/6;
-                printf("VOCE USOU PAREDE INQUEBRAVEL, GASTOU %d DE MANA E RECEBEU %d DE RESISTENCIA\n", *manaMax/2, *manaMax/6);
-                Sleep(1000);
-                break;
-            }  else {
-                printf("Sem mana suficiente\n");
-                break;
-            }
-        case 4:
-            if(*manaAtual >= *manaMax/3) {
-                *manaAtual -= *manaMax/3;
-                *contraataque += *manaMax/5;
-                *defesa += *HPMaxima/10;
-                printf("VOCE USOU PROTECAO DIVINA, GASTOU %d DE MANA, BLOQUEOU %d DE DANO, E CONTRAATACA TODA VEZ QUE TOMA DANO POR %d DE DANO\n", *manaMax/3, *HPMaxima/10, *manaMax/5);
-                Sleep(1000);
-                break;
-            }  else {
-                printf("Sem mana suficiente\n");
-                break;
-            }
-        default: 
-            break;
-        }
-    break;
-    case 3:
-        printf("Escolha uma magia: [1] Explosao De Mana (-%iMP) [2] Furia dos Espiritos (-%iMP) [3] Sobrecarregar (-%iMP) [4] Meditar (+%iMP) [Outro Número] Voltar\n", *manaMax, *manaMax/2, *manaMax/3, *manaMax*3/4);
-        input("%i",&*acao);
-        switch (*acao)
-    {
-        case 1:
 
-    
+    case 2: //HABILIDADES DE PALADINO
+        switch (*acao)
+    {
+        case 1:
+            
     }
     }
 }
@@ -224,7 +164,6 @@ int main(){
     int defesa = 0;
     int res;
     int forca;
-    int contraataque = 0; //apenas usado pelo paladino
     int esq;
     int acao;
     int dano;
@@ -273,11 +212,11 @@ int main(){
             case 2:
                 atkBase = 12;
                 res = 3;
-                forca = 0;
+                forca = 2;
                 HPMaxima = 60;
                 HPAtual = 60;
-                manaMax = 30;
-                manaAtual = 30;
+                manaMax = 15;
+                manaAtual = 15;
                 esq = 10;
                 printf("Voce escolheu o Paladino!\n");
                 repeat = false;
@@ -343,7 +282,7 @@ int main(){
             status(HPAtual, HPMaxima, manaMax, manaAtual);
             divisor();
             hpEnemy(enemyHP, enemyHPMax);
-            printf("SELECIONE A ACAO\n[1] ATAQUE NORMAL\n[2] MAGIA\n[3] DEFENDER\n[4] FUGIR\n");
+            printf("SELECIONE A AÇÃO\n[1] ATAQUE NORMAL\n[2] MAGIA\n[3] DEFENDER\n[4] FUGIR\n");
             input("%i", &acao);
             Sleep(1000);
 
@@ -351,11 +290,11 @@ int main(){
             dano = atkBase * (1+0.1*forca);
             enemyHP -= dano;
             manaAtual += manaMax/10;
-            printf("VOCE USOU ATAQUE NORMAL, CAUSOU %d DE DANO E RECEBEU %d DE MANA", dano, manaMax/10);
+            printf("VOCE USOU ATAQUE NORMAL:\nCAUSOU %d DE DANO\nRECEBEU + %d DE MANA", dano, manaAtual/10);
             Sleep(1000);
         } else if (acao == 2) {
             magiaMenu = true;
-            magia(class, &magiaMenu, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &defesa, &res, &forca, &esq, &acao, dano, &atkBase, &enemyHP, &contraataque);
+            magia(class, &magiaMenu, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &defesa, &res, &forca, &esq, &acao, dano, &atkBase, &enemyHP);
             if (acao > 4 || acao <1) {
                 magiaMenu = false;
                 Sleep(1000);
@@ -390,13 +329,6 @@ int main(){
         
         HPAtual -= danoEnemy;
         printf("DANO: %d\n", danoEnemy);
-        if (contraataque != 0) {                       // contraataque do paladino
-            enemyHP -= contraataque;
-            contraataque -= contraataque/4;            // contraataque reduz em 25% por turno
-            Sleep(1000);
-            printf("VOCE REVIDOU O ATAQUE, CAUSANDO %d DE DANO", contraataque);
-            Sleep(1000);
-        }
         
         defesa = 0; //resetar a defesa no final do turno
 
