@@ -78,12 +78,12 @@ void hpEnemy(int enemyHP, int enemyHPMax){
     printf("} %d/%d\n", enemyHP, enemyHPMax);
 }
 //HORA DO MEGAZORD
-void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque){
+void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTemp, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque){
 if (magiaMenu = true)
 {
     switch(class) {
     case 1: //HABILIDADES DO GUERREIRO
-        printf("Escolha uma magia: [1] Golpe Ciclone(-%iMP) [2] Suga-Vidas (-%iMP) [3] Furia(-%iHP) [4] Descansar(+%iMP) [Outro Número] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/4, *manaMax);
+        printf("Escolha uma magia:\n[1] Golpe Ciclone(-%iMP)\n[2] Suga-Vidas (-%iMP)\n[3] Furia(-%iHP)\n[4] Descansar(+%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/4, *manaMax);
         input("%i",&*acao);
         switch (*acao)
     {
@@ -138,7 +138,7 @@ if (magiaMenu = true)
         }
     break;
     case 2: //HABILIDADES DE PALADINO
-        printf("Escolha uma magia: [1] Investida de Escudo (-%iMP) [2] Rezar (-%iMP+%iHP) [3] Parede Inquebravel (-%iMP) [4] Protecao Divina(-%iMP) [Outro Número] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima*2/3, *manaMax/2, *manaMax/3);
+        printf("Escolha uma magia:\n[1] Investida de Escudo (-%iMP)\n[2] Rezar (-%iMP+%iHP)\n[3] Parede Inquebravel (-%iMP)\n[4] Protecao Divina(-%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima*2/3, *manaMax/2, *manaMax/3);
         input("%i",&*acao);
         switch (*acao)
     {
@@ -195,12 +195,28 @@ if (magiaMenu = true)
         }
     break;
     case 3:
-        printf("Escolha uma magia: [1] Explosao De Mana (-%iMP) [2] Furia dos Espiritos (-%iMP) [3] Sobrecarregar (-%iMP) [4] Meditar (+%iMP) [Outro Número] Voltar\n", *manaMax, *manaMax/2, *manaMax/3, *manaMax*3/4);
+        printf("Escolha uma magia:\n[1] Explosao De Mana (-%iMP)\n[2] Furia dos Espiritos (-%iMP)\n[3] Sobrecarregar (-%iMP)\n[4] Meditar (+%iMP)\n[Outro] Voltar\n", *manaMax, *manaMax/2, *manaMax/3, *manaMax*3/4);
         input("%i",&*acao);
         switch (*acao)
     {
         case 1:
-
+            if(*manaAtual >= *manaMax) {
+                *manaAtual -= *manaMax;
+                dano = 0.7 * *atkBase * (0.1 * (*manaMax + *manaTemp));
+                *enemyHP -= dano;
+                printf("VOCE USOU EXPLOSAO DE MANA E GASTOU %d MANA!\n", *manaMax+manaTemp);
+                Sleep(1000);
+                printf("DANO: %i\n", dano);
+                Sleep(1000);
+                break;
+            }  else {
+                printf("Sem mana suficiente\n");
+                break;
+            }
+        case 2:
+            if(*manaAtual >= *manaMax/2) {
+                *manaAtual -= *manaMax;
+            }
     
     }
     }
@@ -212,18 +228,16 @@ if (magiaMenu = true)
 int main(){
     srand(time(NULL)); //tempo atual
 
-    int jogar;
-    int class;
+    int jogar, class;
     bool repeat = true;
     bool jogando = false;
     bool magiaMenu = false;
-    int HPMaxima;
-    int HPAtual;
-    int manaMax;
+    int HPMaxima, HPAtual;
+    int manaTemp = 0; //apenas usado pelo mago
+    int manaMax = manaMax + manaTemp;
     int manaAtual;
     int defesa = 0;
-    int res;
-    int forca;
+    int res, forca;
     int contraataque = 0; //apenas usado pelo paladino
     int esq;
     int acao;
@@ -250,6 +264,7 @@ int main(){
         divisor();
         printf("          OBRIGADO! ATE A PROXIMA.\n");
         divisor();
+        return 0;
     }
 
     //ESCOLHA DE CLASSES
@@ -271,7 +286,7 @@ int main(){
                 repeat = false;
                 break;
             case 2:
-                atkBase = 12;
+                atkBase = 10;
                 res = 3;
                 forca = 0;
                 HPMaxima = 60;
@@ -355,7 +370,7 @@ int main(){
             Sleep(1000);
         } else if (acao == 2) {
             magiaMenu = true;
-            magia(class, &magiaMenu, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &defesa, &res, &forca, &esq, &acao, dano, &atkBase, &enemyHP, &contraataque);
+            magia(class, &magiaMenu, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTemp, &defesa, &res, &forca, &esq, &acao, dano, &atkBase, &enemyHP, &contraataque);
             if (acao > 4 || acao <1) {
                 magiaMenu = false;
                 Sleep(1000);
