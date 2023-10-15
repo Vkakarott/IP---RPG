@@ -187,7 +187,7 @@ if (magiaMenu = true)
 {
     switch(class) {
     case 1: //HABILIDADES DO GUERREIRO
-        printf("Escolha uma magia:\n[1] Golpe Ciclone(-%iMP)\n[2] Suga-Vidas (-%iMP)\n[3] Furia(-%iHP)\n[4] Descansar(+%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/3, *manaMax);
+        printf("Escolha uma magia:\n[1] Golpe Ciclone (-%iMP)\n[2] Sifao (-%iMP)\n[3] Furia (-%iHP)\n[4] Descansar (+%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/3, *manaMax);
         input("%i",&*acao);
         switch (*acao)
     {
@@ -503,7 +503,7 @@ int main(){
         status(HPAtual, HPMaxima, manaMax, manaAtual, playerLvl, pontos);
         divisor();
         hpEnemy(enemyHP, enemyHPMax, enemyLvl);
-        printf("SELECIONE A ACAO\n[1] ATAQUE NORMAL\n[2] MAGIA\n[3] DEFENDER\n[4] FUGIR\n");
+        printf("SELECIONE A ACAO\n[1] ATAQUE NORMAL\n[2] MAGIA\n[3] DEFENDER\n[4] SAIR\n");
         input("%i", &acao);
         Sleep(1000);
 
@@ -527,11 +527,8 @@ int main(){
             manaAtual += manaMax/2.5;
             printf("VOCÊ SE DEFENDEU DE NO MÁXIMO %d DE DANO E RECEBEU +%d MANA\n", defesa, manaMax*2/5);
             Sleep(1000);
-        } else if (acao == 4) { //fugir
-            int min = 0;
-            int max = 3;
-            int randomInRange = (rand() % (max - min + 1)) + min;
-            printf("VOCE FUGIU E ENCONTROU %s\n", arr[randomInRange]);
+        } else if (acao == 4) { 
+            jogando = false;
             Sleep(1000);
         }
 
