@@ -161,7 +161,7 @@ void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl
             printf(" "); // Espaço em branco para representar a parte vazia da barra
         }
     }
-    printf("] %d/%d     LEVEL: %d\n", manaAtual, manaMax, playerLvl);
+    printf("] %d/%d     LEVEL: %d\n", manaAtual, manaMax, playerLvl+1);
 }
 
 void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *enemyName){
@@ -175,7 +175,7 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *enemyName){
             printf(" ");
         }
     }
-    printf("] %d/%d LVL: %d\n", enemyHP, enemyHPMax, enemyLvl);
+    printf("] %d/%d LVL: %d\n", enemyHP, enemyHPMax, enemyLvl+1);
 }
 //HORA DO MEGAZORD
 void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTemp, int manaTempMax, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque, int* burnMago){
