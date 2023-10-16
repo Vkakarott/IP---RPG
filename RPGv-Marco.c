@@ -179,7 +179,7 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *enemyName){
 }
 //HORA DO MEGAZORD
 void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTemp, int manaTempMax, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque, int* burnMago){
-if (magiaMenu = true)
+if (magiaMenu == true) //tinha um erro aqui, ja corrigi (Vitor)
 {
     switch(class) {
     case 1: //HABILIDADES DO GUERREIRO
