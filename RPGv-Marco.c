@@ -120,7 +120,7 @@ switch (class){
                 printf("Meu deus eu devo ter feito muita merda\n");
                 break;
         }
-        char *arr[] = {"TROLL","BRUXA","GOLLEN","DRAGAO"};
+        char *arr[] = {"TROLL","BRUXA","GOLEM","DRAGAO"};
 
         int min = 0;
         int max = 3;
