@@ -35,6 +35,7 @@ void linha(){
 }
 //Verificar se o inimigo ou o player morreu, e upar de level
 void checkWin(int HPAtual, int enemyHP, bool* jogando, bool* levelup, int* playerLvl, int* enemyLvl, int* pontos, int* contraataque, int* burnMago){
+sleep(1);
 if (HPAtual <= 0 && enemyHP <= 0){
         printf("Voce morreu, mas com honra! Fim de jogo.\n");
         *jogando = false;
@@ -61,7 +62,7 @@ switch (class){
             case 1:
                 *atkBase = 10+3*playerLvl;
                 *res = 1;
-                *forca = 4 + 1*playerLvl;
+                *forca = 2 + 1*playerLvl;
                 *HPMaxima = 50 + 10*playerLvl;
                 *HPAtual = *HPMaxima;
                 *manaMax = 20 + 4*playerLvl;
@@ -71,14 +72,14 @@ switch (class){
                 break;
             case 2:
                 *atkBase = 10 + 2*playerLvl;
-                *res = 3 + 1*playerLvl;
+                *res = 2 + 1*playerLvl;
                 *forca = 0;
-                *HPMaxima = 60 + 18*playerLvl;
+                *HPMaxima = 60 + 15*playerLvl;
                 *HPAtual = *HPMaxima;
                 *manaMax = 30 + 6*playerLvl;
                 *manaAtual = *manaMax;
                 *esq = 10;
-                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+1 RES\n+18 HP\n+6 MANA\n");
+                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+1 RES\n+15 HP\n+6 MANA\n");
                 break;
             case 3:
                 *atkBase = 8 + 2*playerLvl;
@@ -169,7 +170,7 @@ void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl
 void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *enemyName){
     int bar = 10;
     int barEny = (int)((double)enemyHP / enemyHPMax * bar);
-    printf("HP INIMIGA: [");
+    printf("HP %s: [", enemyName);
     for(int i = 0; i < bar; i++){
         if(i < barEny){
             printf("#");
@@ -227,8 +228,8 @@ if (magiaMenu == true) //tinha um erro aqui, ja corrigi (Vitor)
         case 3:
             if (*HPAtual >= *HPMaxima/3) {
                 *HPAtual -= *HPMaxima/3;
-                *forca += *HPMaxima/10;
-                printf("VOCE USOU FURIA, RECEBEU %d DE FORCA E GASTOU %d DE HP\n", *HPMaxima/10, *HPMaxima/3);
+                *forca += *HPMaxima/8;
+                printf("VOCE USOU FURIA, RECEBEU %d DE FORCA E GASTOU %d DE HP\n", *HPMaxima/8, *HPMaxima/3);
                 sleep(1);
                 break;
             } else {
@@ -279,10 +280,10 @@ if (magiaMenu == true) //tinha um erro aqui, ja corrigi (Vitor)
                 break;
             }
         case 3:
-            if (*manaAtual >= *manaMax/2) {
+            if (*manaAtual >= *manaMax*2/3) {
                 *manaAtual -= *manaMax/2;
                 *res += *manaMax/6;
-                printf("VOCE USOU PAREDE INQUEBRAVEL, GASTOU %d DE MANA E RECEBEU %d DE RESISTENCIA\n", *manaMax/2, *manaMax/6);
+                printf("VOCE USOU PAREDE INQUEBRAVEL, GASTOU %d DE MANA E RECEBEU %d DE RESISTENCIA\n", *manaMax*2/3, *manaMax/6);
                 sleep(1);
                 break;
             }  else {
@@ -362,6 +363,7 @@ if (magiaMenu == true) //tinha um erro aqui, ja corrigi (Vitor)
         default:
             break;
     }
+    break;
     case 4:
         printf("Escolha uma magia:\n[1] Tiro potente (-%iMP)\n[2] Usar pocao de cura (+%iHP)\n[3] Tiro enfraquecedor (-%iMP)\n[4] Usar pocao de mana(+%iMP)\n[Outro] Voltar\n", *manaMax, *HPMaxima, *manaMax/2, *manaMax);
         input("%i",&*acao);
@@ -494,7 +496,7 @@ int main(){
             case 1:
                 atkBase = 10;
                 res = 1;
-                forca = 4;
+                forca = 2;
                 HPMaxima = 50;
                 HPAtual = HPMaxima;
                 manaMax = 20;
@@ -505,7 +507,7 @@ int main(){
                 break;
             case 2:
                 atkBase = 10;
-                res = 3;
+                res = 2;
                 forca = 0;
                 HPMaxima = 60;
                 HPAtual = HPMaxima;
@@ -560,7 +562,7 @@ int main(){
         }
     } while (repeat); //Caso o usuario insira o numero errado o loop continua
 
-    if(jogar == 1 && class >= 1 || class <= 5){
+    if((jogar == 1) && (class >= 1 || class <= 5)){
         jogando = true;
         int min = 0;
         int max = 3;
@@ -610,11 +612,14 @@ int main(){
         } else continue;
 
         loading();
-        checkWin(HPAtual, enemyHP, &jogando, &levelup, &playerLvl, &enemyLvl, &pontos, &contraataque, &burnMago);
         if (jogando == false) break;
+        if (HPAtual > HPMaxima) HPAtual = HPMaxima;    // impedir de HP e mp de passar do limite, dano negativo e HP negativo
+        if (manaAtual > manaMax) manaAtual = manaMax;  
+        if (enemyHP < 0) enemyHP = 0; 
+
         // Inimigo ataca
-        if(enemyHP > 0){    
-            if (stun == false){  
+        if(enemyHP > 0){
+            if (stun == false) {  
                 if (arr[enemyIndex] == "TROLL"){
                 printf("%s USOU %s!\n", arr[enemyIndex], atksTroll[rand() % (sizeof(atksTroll) / sizeof(atksTroll[0]))]);
                 sleep(1);
@@ -643,14 +648,14 @@ int main(){
                 printf("O INIMIGO FOI ATORDOADO, MAS SE RECUPEROU\n");
                 stun = false;
             }
-        }
 
-        if (contraataque != 0) {                       // contraataque do paladino
-            enemyHP -= contraataque;
-            contraataque -= contraataque/4;            // contraataque reduz em 25% por turno
-            sleep(1);
-            printf("VOCE REVIDOU O ATAQUE, CAUSANDO %d DE DANO\n", contraataque*4/3);
-            sleep(1);
+            if (contraataque != 0) {                       // contraataque do paladino
+                enemyHP -= contraataque;
+                contraataque -= contraataque/4;            // contraataque reduz em 25% por turno
+                sleep(1);
+                printf("VOCE REVIDOU O ATAQUE, CAUSANDO %d DE DANO\n", contraataque*4/3);
+                sleep(1);
+            }
         }
 
         if (class == 3) { // coisas exclusivas do mago
@@ -672,6 +677,7 @@ int main(){
         if (manaAtual > manaMax) manaAtual = manaMax;  
         if (enemyHP < 0) enemyHP = 0;                  //
 
+        checkWin(HPAtual, enemyHP, &jogando, &levelup, &playerLvl, &enemyLvl, &pontos, &contraataque, &burnMago);
         if (levelup == true) {
             escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, &esq, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &enemyBaseAtk, &pocaoHP, &pocaoMP);
             levelup = false;
