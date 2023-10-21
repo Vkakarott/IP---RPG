@@ -2,17 +2,17 @@
 #include <stdbool.h> //biblioteca de valores booleanos
 #include <stdlib.h> //biblioteca de gerar aleatorios
 #include <time.h>
-#include <windows.h> //#include <unistd.h>
+#include <unistd.h>
 
 //FUNCOES
     //estilo
 void loading(){
     printf(".");
-    Sleep(1000);
+    sleep(1);
     printf(".");
-    Sleep(1000);
+    sleep(1);
     printf(".\n");
-    Sleep(1000);
+    sleep(1);
 }
 
 void input(const char *arg, void *var){
@@ -35,7 +35,7 @@ void linha(){
 }
 //Verificar se o inimigo ou o player morreu, e upar de level
 void checkWin(int HPAtual, int enemyHP, bool* jogando, bool* levelup, int* playerLvl, int* enemyLvl, int* pontos, int* contraataque, int* burnMago){
-Sleep(1000);
+sleep(1);
 if (HPAtual <= 0 && enemyHP <= 0){
         printf("Voce morreu, mas com honra! Fim de jogo.\n");
         *jogando = false;
@@ -56,13 +56,13 @@ if (HPAtual <= 0 && enemyHP <= 0){
     }
 }
 // Prosseguir com o Jogo
-void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* esq, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk){
+void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int* esq, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP){
 
 switch (class){
             case 1:
                 *atkBase = 10+3*playerLvl;
                 *res = 1;
-                *forca = 4 + 1*playerLvl;
+                *forca = 2 + 1*playerLvl;
                 *HPMaxima = 50 + 10*playerLvl;
                 *HPAtual = *HPMaxima;
                 *manaMax = 20 + 4*playerLvl;
@@ -72,26 +72,27 @@ switch (class){
                 break;
             case 2:
                 *atkBase = 10 + 2*playerLvl;
-                *res = 3 + 1*playerLvl;
+                *res = 2 + 1*playerLvl;
                 *forca = 0;
-                *HPMaxima = 60 + 18*playerLvl;
+                *HPMaxima = 60 + 15*playerLvl;
                 *HPAtual = *HPMaxima;
                 *manaMax = 30 + 6*playerLvl;
                 *manaAtual = *manaMax;
                 *esq = 10;
-                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+1 RES\n+18 HP\n+6 MANA\n");
+                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+1 RES\n+15 HP\n+6 MANA\n");
                 break;
             case 3:
                 *atkBase = 8 + 2*playerLvl;
                 *res = 0;
                 *forca = 0;
-                *HPMaxima = 36 + 8*playerLvl;
+                *HPMaxima = 40 + 10 * playerLvl;
                 *HPAtual = *HPMaxima;
-                *manaMax = 50 + 15*playerLvl;
+                *manaMax = 50 + 10 * playerLvl;
                 *manaAtual = *manaMax;
+                *manaTemp = 0;
                 *manaTempMax = *manaMax;
                 *esq = 30;
-                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+8 HP\n+15 MANA\n");
+                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+10 HP\n+10 MANA\n");
                 break;
             case 4:
                 *atkBase = 14 + 4*playerLvl;
@@ -101,40 +102,31 @@ switch (class){
                 *HPAtual = *HPMaxima;
                 *manaMax = 20 + 2*playerLvl;
                 *manaAtual = *manaMax;
+                *pocaoHP = 2;
+                *pocaoMP = 2;
                 *esq = 30;
                 printf("LEVEL UP! Voce recebeu:\n+4 ATK\n+8 HP\n+2 MANA\n");
-                break;
-            case 5:
-                *atkBase = 12 + 3*playerLvl;
-                *res = 0;
-                *forca = 0;
-                *HPMaxima = 30 + 3*playerLvl;
-                *HPAtual = *HPMaxima;
-                *manaMax = 30 + 6*playerLvl;
-                *manaAtual = *manaMax;
-                *esq = 50;
-                printf("LEVEL UP! Voce recebeu:\n+3 ATK\n+3 HP\n+6 MANA\n");
                 break;
             default:
                 printf("Meu deus eu devo ter feito muita merda\n");
                 break;
         }
-        char *arr[] = {"TROLL","BRUXA","GOLLEN","DRAGAO"};
+        char *arr[] = {"TROLL","BRUXA","GOLEM","DRAGAO"};
 
         int min = 0;
         int max = 3;
         int randomInRange = (rand() % (max - min + 1)) + min;
-        Sleep(1000);
+        sleep(1);
         printf("VOCE ENCONTROU %s\n", arr[randomInRange]);
-        Sleep(1000);
+        sleep(1);
         *enemyHPMax += 10 * enemyLvl;
         *enemyHP = *enemyHPMax;
-        *enemyBaseAtk += 2 * enemyLvl;
+        *enemyBaseAtk += 2 * enemyLvl; 
 
 }
 
 //Barra de status atual
-void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl, int pontos) {
+void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl, int pontos, int class, int pocaoHP, int pocaoMP) {
     int bar = 10; // Tamanho total da barra de HP
 
     // Barra de Vida
@@ -160,13 +152,14 @@ void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl
             printf(" "); // Espaço em branco para representar a parte vazia da barra
         }
     }
-    printf("] %d/%d     LEVEL: %d\n", manaAtual, manaMax, playerLvl);
+    printf("] %d/%d     LEVEL: %d\n", manaAtual, manaMax, playerLvl+1);
+    if (class == 4) printf("POCOES DE CURA: %d   POCOES DE MANA: %d\n", pocaoHP, pocaoMP);
 }
 
 void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *enemyName){
     int bar = 10;
     int barEny = (int)((double)enemyHP / enemyHPMax * bar);
-    printf("HP INIMIGA: [");
+    printf("HP %s: [", enemyName);
     for(int i = 0; i < bar; i++){
         if(i < barEny){
             printf("#");
@@ -174,28 +167,29 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *enemyName){
             printf(" ");
         }
     }
-    printf("] %d/%d LVL: %d\n", enemyHP, enemyHPMax, enemyLvl);
+    printf("] %d/%d LVL: %d\n", enemyHP, enemyHPMax, enemyLvl+1);
 }
 //HORA DO MEGAZORD
-void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTemp, int manaTempMax, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque, int* burnMago){
-if (magiaMenu = true)
+void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTemp, int manaTempMax, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque, int* burnMago, bool* stun, int* pocaoHP, int* pocaoMP){
+if (magiaMenu == true) //tinha um erro aqui, ja corrigi (Vitor)
 {
     switch(class) {
     case 1: //HABILIDADES DO GUERREIRO
          printf("Escolha uma magia:\n[1] Golpe Ciclone (-%iMP)\n[2] Sifao (-%iMP)\n[3] Furia (-%iHP)\n[4] Descansar (+%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/3, *manaMax);   
         input("%i",&*acao);
+        sleep(1);
         switch (*acao)
     {
         case 1:
             if (*manaAtual >= *manaMax*3/4) {
                 *manaAtual -= *manaMax*3/4;
-                dano = 0.5 * *atkBase * (1+0.1 * *forca);
+                dano = 0.4 * *atkBase * (1+0.2 * *forca);
                 *enemyHP -= dano * 4;
                 printf("VOCÊ USOU GOLPE CICLONE E GASTOU %d MANA!\n", *manaMax*3/4);
-                Sleep(1000);
+                sleep(1);
                 for (int i = 0; i < 4; i ++) {
                 printf("DANO: %i\n", dano);
-                Sleep(1000);
+                sleep(1);
                 }
                 break;
             } else {
@@ -210,9 +204,9 @@ if (magiaMenu = true)
                 *enemyHP -= dano;
                 *HPAtual += dano/2;
                 printf("VOCE USOU SIFAO, CUROU %d DE HP E GASTOU %d MANA\n", dano/2, *manaMax/2);
-                Sleep(1000);
+                sleep(1);
                 printf("DANO: %i\n", dano);
-                Sleep(1000);
+                sleep(1);
                 break;
             } else {
                 printf("Sem mana suficiente\n");
@@ -225,7 +219,7 @@ if (magiaMenu = true)
                 *HPAtual -= *HPMaxima/3;
                 *forca += *HPMaxima/10;
                 printf("VOCE USOU FURIA, RECEBEU %d DE FORCA E GASTOU %d DE HP\n", *HPMaxima/10, *HPMaxima/3);
-                Sleep(1000);
+                sleep(1);
                 break;
             } else {
                 printf("Sem HP suficiente\n");
@@ -235,15 +229,16 @@ if (magiaMenu = true)
         case 4:
                 *manaAtual = *manaMax;
                 printf("VOCE DESCANSOU E RECUPEROU TODA SUA MANA\n");
-                Sleep(1000);
+                sleep(1);
                 break;
         default:
             break;
         }
     break;
     case 2: //HABILIDADES DE PALADINO
-        printf("Escolha uma magia:\n[1] Investida de Escudo (-%iMP)\n[2] Rezar (-%iMP+%iHP)\n[3] Parede Inquebravel (-%iMP)\n[4] Protecao Divina(-%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima*2/3, *manaMax/2, *manaMax/3);
+        printf("Escolha uma magia:\n[1] Investida de Escudo (-%iMP)\n[2] Rezar (-%iMP+%iHP)\n[3] Parede Inquebravel (-%iMP)\n[4] Protecao Divina(-%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima*2/3, *manaMax*2/3, *manaMax/3);
         input("%i",&*acao);
+        sleep(1);
         switch (*acao)
     {
         case 1:
@@ -252,9 +247,9 @@ if (magiaMenu = true)
                 dano = 1.3 * *atkBase * (1+0.1 * *res);
                 *enemyHP -= dano;
                 printf("VOCE USOU INVESTIDA DE ESCUDO E GASTOU %d MANA!\n", *manaMax*3/4);
-                Sleep(1000);
+                sleep(1);
                 printf("DANO: %i\n", dano);
-                Sleep(1000);
+                sleep(1);
                 break;
             } else {
                 printf("Sem mana suficiente\n");
@@ -266,7 +261,7 @@ if (magiaMenu = true)
                 *manaAtual -= *manaMax/2;
                 *HPAtual += *HPMaxima*2/3;
                 printf("VOCE REZOU, GASTOU %d DE MANA E RECEBEU %d DE HP\n", *manaMax/2, *HPMaxima*2/3);
-                Sleep(1000);
+                sleep(1);
                 break;
             }  else {
                 printf("Sem mana suficiente\n");
@@ -274,11 +269,11 @@ if (magiaMenu = true)
                 break;
             }
         case 3:
-            if (*manaAtual >= *manaMax/2) {
-                *manaAtual -= *manaMax/2;
+            if (*manaAtual >= *manaMax*2/3) {
+                *manaAtual -= *manaMax*2/3;
                 *res += *manaMax/6;
                 printf("VOCE USOU PAREDE INQUEBRAVEL, GASTOU %d DE MANA E RECEBEU %d DE RESISTENCIA\n", *manaMax/2, *manaMax/6);
-                Sleep(1000);
+                sleep(1);
                 break;
             }  else {
                 printf("Sem mana suficiente\n");
@@ -288,10 +283,10 @@ if (magiaMenu = true)
         case 4:
             if(*manaAtual >= *manaMax/3) {
                 *manaAtual -= *manaMax/3;
-                *contraataque += *manaMax/5;
+                *contraataque += *res;
                 *defesa += *HPMaxima/10;
-                printf("VOCE USOU PROTECAO DIVINA, GASTOU %d DE MANA, BLOQUEOU %d DE DANO, E CONTRAATACA TODA VEZ QUE TOMA DANO POR %d DE DANO\n", *manaMax/3, *defesa, *manaMax/5);
-                Sleep(1000);
+                printf("VOCE USOU PROTECAO DIVINA, GASTOU %d DE MANA, BLOQUEOU %d DE DANO, E CONTRAATACA TODA VEZ QUE TOMA DANO POR %d DE DANO\n", *manaMax/3, *defesa, *contraataque);
+                sleep(1);
                 break;
             }  else {
                 printf("Sem mana suficiente\n");
@@ -303,8 +298,9 @@ if (magiaMenu = true)
         }
     break;
     case 3:
-        printf("Escolha uma magia:\n[1] Explosao De Mana (-%iMP)\n[2] Furia dos Espiritos (-%iMP)\n[3] Sobrecarregar (+%iMPMAX)\n[4] Meditar (+%iMP)\n[Outro] Voltar\n", *manaMax-*manaTemp, (*manaMax-*manaTemp)/2, manaTempMax, *manaMax*3/4);
+        printf("Escolha uma magia:\n[1] Explosao De Mana (-%iMP)\n[2] Furia dos Espiritos (-%iMP+%iHP)\n[3] Sobrecarregar (+%iMPMAX)\n[4] Meditar (+%iMP)\n[Outro] Voltar\n", *manaMax-*manaTemp, (*manaMax-*manaTemp)/2, *HPMaxima/4, manaTempMax, *manaMax*3/4);
         input("%i",&*acao);
+        sleep(1);
         switch (*acao)
     {
         case 1:
@@ -313,9 +309,9 @@ if (magiaMenu = true)
                 dano = *atkBase * (0.05 * *manaMax);
                 *enemyHP -= dano;
                 printf("VOCE USOU EXPLOSAO DE MANA E GASTOU %d MANA!\n", *manaMax-*manaTemp);
-                Sleep(1000);
+                sleep(1);
                 printf("DANO: %i\n", dano);
-                Sleep(1000);
+                sleep(1);
                 break;
             }  else {
                 printf("Sem mana suficiente\n");
@@ -323,11 +319,12 @@ if (magiaMenu = true)
                 break;
             }
         case 2:
-            if(*manaAtual >= *manaMax/2) {
-                *manaAtual -= *manaMax/2;
-                *burnMago += *manaMax/6;
-                printf("VOCE USOU FURIA DOS ESPIRITOS, ROUBANDO A ALMA DO INIMIGO, DANDO E CURANDO %d HP E GASTANDO %d DE MANA\n", *burnMago, *manaMax/6);
-                Sleep(1000);
+            if(*manaAtual >= (*manaMax-*manaTemp)/2) {
+                *manaAtual -= (*manaMax-*manaTemp)/2;
+                *burnMago += *manaMax/8;
+                *HPAtual += *HPMaxima/4;
+                printf("VOCE USOU FURIA DOS ESPIRITOS, SUGANDO A ALMA DO INIMIGO, RESTAUROU %d HP E GASTOU %d MANA", *HPMaxima/4, (*manaMax-*manaTemp)/2);
+                sleep(1);
                 break;
             }  else {
                 printf("Sem mana suficiente\n");
@@ -339,7 +336,7 @@ if (magiaMenu = true)
                 *manaTemp += *manaMax*6/5;
                 *manaMax += *manaTemp;
                 printf("VOCE SOBRECARREGOU, GANHANDO +%d DE MANA MAXIMA TEMPORARIA\n", manaTempMax);
-                Sleep(1000);
+                sleep(1);
                 break;
             }  else {
                 printf("Voce ja esta sobrecarregado!\n");
@@ -350,8 +347,74 @@ if (magiaMenu = true)
                 *manaAtual += *manaMax*3/4;
                 *defesa += *manaMax/6;
                 printf("VOCE MEDITOU, GANHANDO +%d DE MANA E BLOQUEANDO %d DE DANO\n", *manaMax*3/4, *manaMax/6);
-                Sleep(1000);
+                sleep(1);
                 break;
+        default:
+            break;
+    }
+    break;
+    case 4:
+        printf("Escolha uma magia:\n[1] Tiro potente (-%iMP)\n[2] Usar pocao de cura (+%iHP)\n[3] Tiro enfraquecedor (-%iMP)\n[4] Usar pocao de mana(+%iMP)\n[Outro] Voltar\n", *manaMax, *HPMaxima, *manaMax/2, *manaMax);
+        input("%i",&*acao);
+        sleep(1);
+        switch (*acao)
+    {
+        case 1:
+            if (*manaAtual >= *manaMax) {
+                *manaAtual -= *manaMax;
+                dano = 2 * *atkBase * (1+0.1 * *forca);
+                *enemyHP -= dano;
+                *stun = true;
+                printf("VOCE USOU TIRO POTENTE, ATORDOANDO O INIMIGO E GASTANDO %d MANA!\n", *manaMax);
+                sleep(1);
+                printf("DANO: %i\n", dano);
+                sleep(1);
+                break;
+            }  else {
+                printf("Sem mana suficiente\n");
+                *acao = 5;
+                break;
+            }
+        case 2:
+            if (*pocaoHP > 0) {
+                *pocaoHP -= 1;
+                *HPAtual += *HPMaxima;
+                printf("VOCE USOU UMA POCAO DE CURA E CUROU %d DE HP\n", *HPMaxima);
+                sleep(1);
+                break;
+            }  else {
+                printf("Voce nao tem uma pocao\n");
+                *acao = 5;
+                break;
+            }
+        case 3:
+            if (*manaAtual >= *manaMax/2) {
+                *manaAtual -= *manaMax/2;
+                *res += *manaMax/4;
+                dano = 1.3 * *atkBase * (1+0.1 * *forca);
+                *enemyHP -= dano;
+                printf("VOCE USOU TIRO ENFRAQUECEDOR, ENFRAQUECENDO O INIMIGO E GASTANDO %d MANA\n", *manaMax/2);
+                sleep(1);
+                printf("DANO: %i\n", dano);
+                sleep(1);
+                break;
+            } else {
+                printf("Sem mana suficiente\n");
+                *acao = 5;
+                break;
+            }
+        case 4:
+            if (*pocaoMP > 0) {
+                *pocaoMP -= 1;
+                *manaAtual += *manaMax;
+                printf("VOCE USOU UMA POCAO DE MANA E RECEBEU %d MANA\n", *manaMax);
+                sleep(1);
+                break;
+            }  else {
+                printf("Voce nao tem uma pocao\n");
+                *acao = 5;
+                break;
+            }
         default:
             break;
     }
@@ -359,7 +422,6 @@ if (magiaMenu = true)
     }
 }
 }
-
 
 //CODIGO PRINCIPAL
 int main(){
@@ -369,12 +431,14 @@ int main(){
     bool repeat = true;
     bool jogando = false;
     bool magiaMenu = false;
-    bool levelup = false;
+    bool levelup = false; 
+    bool stun = false;          //stunar o inimigo
     int HPMaxima, HPAtual;
     int playerLvl = 0, enemyLvl = 0, pontos = 0;
     int manaTemp = 0, manaTempMax, burnMago = 0;  //apenas usado pelo mago
     int manaMax;
     int manaAtual;
+    int pocaoHP, pocaoMP;                          //apenas usado pelo arqueiro
     int defesa = 0;
     int res, forca;
     int contraataque = 0;               //apenas usado pelo paladino
@@ -384,9 +448,13 @@ int main(){
     int atkBase;
     int enemyHPMax;
     int enemyHP;
-    int enemyBaseAtk = 10;
+    int enemyBaseAtk = 0;
     int danoEnemy;
     int enemyIndex = 0; // Variável que resgata qual é o inimigo atual 
+    int enemyAtkIndex = 0; // Variãvel que resgata qual o golpe foi escolhido no turno atual
+    int min = 0;
+    int max = 2;
+    int enemyAct = (rand() % (max - min + 1)) + min;
 
     //array de strings
     char *arr[] = {"TROLL","BRUXA","GOLEM","DRAGAO"};
@@ -403,6 +471,7 @@ int main(){
     divisor(); {
     printf("Pressione [1] para JOGAR ou [0] para SAIR\n");
     input("%i", &jogar);
+    sleep(1);
     if(jogar == 0){
         divisor();
         printf("          OBRIGADO! ATE A PROXIMA.\n");
@@ -412,14 +481,14 @@ int main(){
 
     //ESCOLHA DE CLASSES
     do {
-        printf("Escolha sua Classe:\n[1]Guerreiro\n[2]Paladino\n[3]Bruxo\n[4]Ranger\n[5]Ninja\n");
+        printf("Escolha sua Classe:\n[1]Guerreiro\n[2]Paladino\n[3]Bruxo\n[4]Arqueiro\n");
         input("%i", &class);
-
+        sleep(1);
         switch (class){
             case 1:
                 atkBase = 10;
                 res = 1;
-                forca = 4;
+                forca = 2;
                 HPMaxima = 50;
                 HPAtual = HPMaxima;
                 manaMax = 20;
@@ -430,7 +499,7 @@ int main(){
                 break;
             case 2:
                 atkBase = 10;
-                res = 3;
+                res = 2;
                 forca = 0;
                 HPMaxima = 60;
                 HPAtual = HPMaxima;
@@ -444,7 +513,7 @@ int main(){
                 atkBase = 8;
                 res = 0;
                 forca = 0;
-                HPMaxima = 36;
+                HPMaxima = 40;
                 HPAtual = HPMaxima;
                 manaMax = 50;
                 manaAtual = manaMax;
@@ -461,20 +530,10 @@ int main(){
                 HPAtual = HPMaxima;
                 manaMax = 20;
                 manaAtual = manaMax;
+                pocaoHP = 2;
+                pocaoMP = 2;
                 esq = 30;
-                printf("Voce escolheu o Ranger!\n");
-                repeat = false;
-                break;
-            case 5:
-                atkBase = 12;
-                res = 0;
-                forca = 0;
-                HPMaxima = 30;
-                HPAtual = HPMaxima;
-                manaMax = 30;
-                manaAtual = manaMax;
-                esq = 50;
-                printf("Voce escolheu o Ninja!\n");
+                printf("Voce escolheu o Arqueiro!\n");
                 repeat = false;
                 break;
             default:
@@ -489,9 +548,9 @@ int main(){
         int max = 3;
         int randomInRange = (rand() % (max - min + 1)) + min;
         enemyIndex = randomInRange;
-        Sleep(1000);
+        sleep(1);
         printf("VOCE ENCONTROU %s\n", arr[randomInRange]);
-        Sleep(1000);
+        sleep(1);
         enemyHPMax = 50;
         enemyHP = 50;
     }
@@ -500,25 +559,25 @@ int main(){
         linha();
         loading();
         divisor();
-        status(HPAtual, HPMaxima, manaMax, manaAtual, playerLvl, pontos);
+        status(HPAtual, HPMaxima, manaMax, manaAtual, playerLvl, pontos, class, pocaoHP, pocaoMP);
         divisor();
         hpEnemy(enemyHP, enemyHPMax, enemyLvl, arr[enemyIndex]);
         printf("SELECIONE A ACAO\n[1] ATAQUE NORMAL\n[2] MAGIA\n[3] DEFENDER\n[4] SAIR\n");
         input("%i", &acao);
-        Sleep(1000);
+        sleep(1);
 
         if(acao == 1){
             dano = atkBase * (1+0.1*forca);
             enemyHP -= dano;
             manaAtual += manaMax/10;
             printf("VOCE USOU ATAQUE NORMAL, CAUSOU %d DE DANO E RECEBEU %d DE MANA\n", dano, manaMax/10);
-            Sleep(1000);
+            sleep(1);
         } else if (acao == 2) {
             magiaMenu = true;
-            magia(class, &magiaMenu, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTemp, manaTempMax, &defesa, &res, &forca, &esq, &acao, dano, &atkBase, &enemyHP, &contraataque, &burnMago);
-            if (acao > 4 || acao <1) {
+            magia(class, &magiaMenu, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTemp, manaTempMax, &defesa, &res, &forca, &esq, &acao, dano, &atkBase, &enemyHP, &contraataque, &burnMago, &stun, &pocaoHP, &pocaoMP);
+            if (acao > 4 || acao < 1) {
                 magiaMenu = false;
-                Sleep(1000);
+                sleep(1);
                 continue;
             }   
             
@@ -526,60 +585,134 @@ int main(){
             defesa += HPMaxima/2; //usada na formula de dano recebido, escala com hp maxímo
             manaAtual += manaMax/2.5;
             printf("VOCÊ SE DEFENDEU DE NO MÁXIMO %d DE DANO E RECEBEU +%d MANA\n", defesa, manaMax*2/5);
-            Sleep(1000);
+            sleep(1);
         }  else if (acao == 4) { 
             jogando = false;
-            Sleep(1000);
-        }
+            sleep(1);
+        } else continue;
 
         loading();
         if (jogando == false) break;
-        // Inimigo ataca
-        if (arr[enemyIndex] == "TROLL"){
-        printf("%s USOU %s!\n", arr[enemyIndex], atksTroll[rand() % (sizeof(atksTroll) / sizeof(atksTroll[0]))]);
-        Sleep(1000);
-        }
-        if(arr[enemyIndex] == "BRUXA"){
-        printf("%s USOU %s!\n", arr[enemyIndex], atksBruxa[rand() % (sizeof(atksBruxa) / sizeof(atksBruxa[0]))]);
-        Sleep(1000);
-        }
-        if(arr[enemyIndex] == "GOLEM"){
-        printf("%s USOU %s!\n", arr[enemyIndex], atksGolem[rand() % (sizeof(atksGolem) / sizeof(atksGolem[0]))]);
-        Sleep(1000);
-        }
-        if(arr[enemyIndex] == "DRAGAO"){
-        printf("%s USOU %s!\n", arr[enemyIndex], atksDragao[rand() % (sizeof(atksDragao) / sizeof(atksDragao[0]))]);
-        Sleep(1000);
-        }
-        
-        danoEnemy = (enemyBaseAtk-defesa)/(1+0.1*res);
-            
-        if (danoEnemy < 0) danoEnemy = 0;              // dano do inimigo não ficar negativo por causa da formula de defesa
-        defesa = 0;  //resetar a defesa no final do turno
-            
-        HPAtual -= danoEnemy;
-        printf("DANO: %d\n", danoEnemy);
-        if (contraataque != 0) {                       // contraataque do paladino
-            enemyHP -= contraataque;
-            contraataque -= contraataque/4;            // contraataque reduz em 25% por turno
-            Sleep(1000);
-            printf("VOCE REVIDOU O ATAQUE, CAUSANDO %d DE DANO\n", contraataque*4/3);
-            Sleep(1000);
-        }
 
-        if (class == 3) { // coisas exclusivas do mago
-            if (manaTemp != 0) {
-                manaTemp -= manaTempMax/5;
-                manaMax -= manaTempMax/5;
+        if (HPAtual > HPMaxima) HPAtual = HPMaxima;    // impedir de HP e mp de passar do limite, dano negativo e HP negativo
+        if (manaAtual > manaMax) manaAtual = manaMax;  
+        if (enemyHP < 0) enemyHP = 0;                  
+        // Inimigo ataca
+        if (enemyHP > 0) {
+            if (stun == false) {  
+                if (arr[enemyIndex] == "TROLL"){
+        int min = 0;
+        int max = 2;
+        int enemyAct = (rand() % (max - min + 1)) + min;
+        enemyAtkIndex = enemyAct;
+        printf("%s USOU %s!\n", arr[enemyIndex], atksTroll[enemyAct]);
+        sleep(1);
+    }
+    if(arr[enemyIndex] == "BRUXA"){
+        int min = 0;
+        int max = 2;
+        int enemyAct = (rand() % (max - min + 1)) + min;
+        enemyAtkIndex = enemyAct;
+        printf("%s USOU %s!\n", arr[enemyIndex], atksBruxa[enemyAct]);
+        sleep(1);
+    }
+    if(arr[enemyIndex] == "GOLEM"){
+        int min = 0;
+        int max = 2;
+        int enemyAct = (rand() % (max - min + 1)) + min;
+        enemyAtkIndex = enemyAct;
+        printf("%s USOU %s!\n", arr[enemyIndex], atksGolem[enemyAct]);
+        sleep(1);
+    }
+    if(arr[enemyIndex] == "DRAGAO"){
+        int min = 0;
+        int max = 2;
+        int enemyAct = (rand() % (max - min + 1)) + min;
+        enemyAtkIndex = enemyAct;
+        printf("%s USOU %s!\n", arr[enemyIndex], atksDragao[enemyAct]);
+        sleep(1);
+    }
+
+    if (atksTroll[enemyAtkIndex] == "Paulada") {
+        enemyBaseAtk = 10;
+    }
+
+    if (atksTroll[enemyAtkIndex] == "Garras Afiadas") {
+        enemyBaseAtk = 10 * 1.5;
+    }
+
+    if (atksTroll[enemyAtkIndex] == "Grito Bestial") {
+        enemyBaseAtk = 10 * 1.6;
+    }
+
+    if (atksBruxa[enemyAtkIndex] == "Raio Sombrio") {
+        enemyBaseAtk = 10;
+    }
+
+    if (atksBruxa[enemyAtkIndex] == "Gas Toxico") {
+        enemyBaseAtk = 10 * 1.5;
+    }
+
+    if (atksBruxa[enemyAtkIndex] == "Atolar") {
+        enemyBaseAtk = 10 * 1.6;
+    }
+
+    if (atksGolem[enemyAtkIndex] == "Desmoronar") {
+        enemyBaseAtk = 10;
+    }
+
+    if (atksGolem[enemyAtkIndex] == "Terremoto") {
+        enemyBaseAtk = 10 * 1.5;
+    }
+
+    if (atksGolem[enemyAtkIndex] == "Impacto Meteoro") {
+        enemyBaseAtk = 10 * 1.6;
+    }
+
+    if (atksDragao[enemyAtkIndex] == "Rugido Draconico") {
+        enemyBaseAtk = 10;
+    }
+
+    if (atksDragao[enemyAtkIndex] == "Furacao") {
+        enemyBaseAtk = 10 * 1.5;
+    }
+
+    if (atksDragao[enemyAtkIndex] == "Chamas Infernais") {
+        enemyBaseAtk = 10 * 1.6;
+    }
+                danoEnemy = (enemyBaseAtk-defesa)/(1+0.1*res);                   
+                if (danoEnemy < 0) danoEnemy = 0;   // dano do inimigo não ficar negativo por causa da formula de defesa
+                defesa = 0;  //resetar a defesa no final do turno
+                
+                HPAtual -= danoEnemy;
+                printf("DANO: %d\n", danoEnemy);
+            } else {
+                printf("O INIMIGO FOI ATORDOADO, MAS SE RECUPEROU\n");
+                stun = false;
             }
             
-            if (burnMago != 0) {
-                enemyHP -= burnMago;
-                HPAtual += burnMago;
-                burnMago -= burnMago/4;
-                Sleep(1000);
-                printf("VOCE SUGOU A ALMA DO SEU INIMIGO, CAUSANDO %d DE DANO E CURANDO %d DE VIDA\n", burnMago*4/3, burnMago*4/3);
-                Sleep(1000);
+            if (contraataque != 0) {                       // contraataque do paladino
+                enemyHP -= contraataque;
+                contraataque -= contraataque/4;            // contraataque reduz em 25%/turno
+                sleep(1);
+                printf("VOCE REVIDOU O ATAQUE, CAUSANDO %d DE DANO\n", contraataque*4/3);
+                sleep(1);
+            }
+
+            if (class == 3) { // coisas exclusivas do mago
+                if (manaTemp != 0) {
+                    manaTemp -= manaTempMax/5;              //mana temporaria reduz em 25%/turno
+                    manaMax -= manaTempMax/5;
+                }
+                
+                if (burnMago != 0) {
+                    enemyHP -= burnMago;
+                    HPAtual += burnMago;
+                    burnMago -= burnMago/4;                 //burn reduz em 25%/turno
+                    sleep(1);
+                    printf("VOCE SUGOU A ALMA DO SEU INIMIGO, CAUSANDO %d DE DANO E CURANDO %d DE VIDA\n", burnMago*4/3, burnMago*4/3);
+                    sleep(1);
+                }
             }
         }
         if (HPAtual > HPMaxima) HPAtual = HPMaxima;    // impedir de HP e mp de passar do limite, dano negativo e HP negativo
@@ -588,7 +721,7 @@ int main(){
 
         checkWin(HPAtual, enemyHP, &jogando, &levelup, &playerLvl, &enemyLvl, &pontos, &contraataque, &burnMago);
         if (levelup == true) {
-            escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &esq, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &enemyBaseAtk);
+            escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, &esq, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &enemyBaseAtk, &pocaoHP, &pocaoMP);
             levelup = false;
         }
 
@@ -599,5 +732,5 @@ int main(){
 
     return 0;
     }
-    
+
 }
