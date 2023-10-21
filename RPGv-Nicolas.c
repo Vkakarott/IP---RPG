@@ -3,6 +3,7 @@
 #include <stdlib.h> //biblioteca de gerar aleatorios
 #include <time.h>
 #include <unistd.h>
+#include <string.h> //biblioteca para uso de strncmp, possibilitando comparar duas strings sem dar erros (na parte dos inimigos)
 
 //FUNCOES
     //estilo
@@ -452,10 +453,7 @@ int main(){
     int danoEnemy;
     int enemyIndex = 0; // Variável que resgata qual é o inimigo atual 
     int enemyAtkIndex = 0; // Variãvel que resgata qual o golpe foi escolhido no turno atual
-    int min = 0;
-    int max = 2;
-    int enemyAct = (rand() % (max - min + 1)) + min;
-
+   
     //array de strings
     char *arr[] = {"TROLL","BRUXA","GOLEM","DRAGAO"};
 
@@ -542,7 +540,7 @@ int main(){
         }
     } while (repeat); //Caso o usuario insira o numero errado o loop continua
 
-    if(jogar == 1 && class >= 1 || class <= 5){
+    if((jogar == 1 && class >= 1) || class <= 4){
         jogando = true;
         int min = 0;
         int max = 3;
@@ -599,8 +597,10 @@ int main(){
         if (enemyHP < 0) enemyHP = 0;                  
         // Inimigo ataca
         if (enemyHP > 0) {
-            if (stun == false) {  
-                if (arr[enemyIndex] == "TROLL"){
+        
+        if (stun == false) {  
+        
+    if (strcmp(arr[enemyIndex], "TROLL") == 0) {
         int min = 0;
         int max = 2;
         int enemyAct = (rand() % (max - min + 1)) + min;
@@ -608,7 +608,7 @@ int main(){
         printf("%s USOU %s!\n", arr[enemyIndex], atksTroll[enemyAct]);
         sleep(1);
     }
-    if(arr[enemyIndex] == "BRUXA"){
+    if (strcmp(arr[enemyIndex], "BRUXA") == 0) {
         int min = 0;
         int max = 2;
         int enemyAct = (rand() % (max - min + 1)) + min;
@@ -616,7 +616,7 @@ int main(){
         printf("%s USOU %s!\n", arr[enemyIndex], atksBruxa[enemyAct]);
         sleep(1);
     }
-    if(arr[enemyIndex] == "GOLEM"){
+    if (strcmp(arr[enemyIndex], "GOLEM") == 0) {
         int min = 0;
         int max = 2;
         int enemyAct = (rand() % (max - min + 1)) + min;
@@ -624,7 +624,7 @@ int main(){
         printf("%s USOU %s!\n", arr[enemyIndex], atksGolem[enemyAct]);
         sleep(1);
     }
-    if(arr[enemyIndex] == "DRAGAO"){
+    if (strcmp(arr[enemyIndex], "DRAGAO") == 0) {
         int min = 0;
         int max = 2;
         int enemyAct = (rand() % (max - min + 1)) + min;
@@ -633,51 +633,51 @@ int main(){
         sleep(1);
     }
 
-    if (atksTroll[enemyAtkIndex] == "Paulada") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Paulada") == 0) {
         enemyBaseAtk = 10;
     }
 
-    if (atksTroll[enemyAtkIndex] == "Garras Afiadas") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Garras Afiadas") == 0) {
         enemyBaseAtk = 10 * 1.5;
     }
 
-    if (atksTroll[enemyAtkIndex] == "Grito Bestial") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Grito Bestial") == 0) {
         enemyBaseAtk = 10 * 1.6;
     }
 
-    if (atksBruxa[enemyAtkIndex] == "Raio Sombrio") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Raio Sombrio") == 0) {
         enemyBaseAtk = 10;
     }
 
-    if (atksBruxa[enemyAtkIndex] == "Gas Toxico") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Gas Toxico") == 0) {
         enemyBaseAtk = 10 * 1.5;
     }
 
-    if (atksBruxa[enemyAtkIndex] == "Atolar") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Atolar") == 0) {
         enemyBaseAtk = 10 * 1.6;
     }
 
-    if (atksGolem[enemyAtkIndex] == "Desmoronar") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Desmoronar") == 0) {
         enemyBaseAtk = 10;
     }
 
-    if (atksGolem[enemyAtkIndex] == "Terremoto") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Terremoto") == 0) {
         enemyBaseAtk = 10 * 1.5;
     }
 
-    if (atksGolem[enemyAtkIndex] == "Impacto Meteoro") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Impacto Meteoro") == 0) {
         enemyBaseAtk = 10 * 1.6;
     }
 
-    if (atksDragao[enemyAtkIndex] == "Rugido Draconico") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Rugido Draconico") == 0) {
         enemyBaseAtk = 10;
     }
 
-    if (atksDragao[enemyAtkIndex] == "Furacao") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Furacao") == 0) {
         enemyBaseAtk = 10 * 1.5;
     }
 
-    if (atksDragao[enemyAtkIndex] == "Chamas Infernais") {
+    if (strcmp(atksTroll[enemyAtkIndex], "Chamas Infernais") == 0) {
         enemyBaseAtk = 10 * 1.6;
     }
                 danoEnemy = (enemyBaseAtk-defesa)/(1+0.1*res);                   
