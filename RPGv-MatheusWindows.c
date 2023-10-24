@@ -437,7 +437,7 @@ if (magiaMenu == true) //tinha um erro aqui, ja corrigi (Vitor)
                 *burnMago += *manaMax/8;
                 *HPAtual += *HPMaxima/4;
                 purple();
-                printf("VOCE USOU FURIA DOS ESPIRITOS, SUGANDO A ALMA DO INIMIGO, RESTAUROU %d HP E GASTOU %d MANA", *HPMaxima/4, (*manaMax-*manaTemp)/2);
+                printf("VOCE USOU FURIA DOS ESPIRITOS, SUGANDO A ALMA DO INIMIGO, RESTAUROU %d HP E GASTOU %d MANA\n", *HPMaxima/4, (*manaMax-*manaTemp)/2);
                 Sleep(1000);
                 break;
             }  else {
@@ -604,7 +604,7 @@ void inimigoAtacar(bool* inimigoAtacou, int enemyIndex, const char* arr[], const
             *enemyHP += *enemyHPMax * 1/3;
             *enemyHPMax += *enemyHPMax * 1/3;
             red();
-            printf("O INIMIGO AUMENTOU SEU HP EM %d", *enemyHPMax * 1/3);
+            printf("O INIMIGO AUMENTOU SEU HP EM %d\n", *enemyHPMax * 1/3);
         }
         if (enemyAtkIndex == 1)  {   //Impacto Meteoro
             *inimigoAtk = *inimigoBaseAtk * 5/3;
