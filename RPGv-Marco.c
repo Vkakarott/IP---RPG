@@ -261,7 +261,7 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char* enemyName){
 }
 //HORA DO MEGAZORD
 void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTemp, int manaTempMax, int* defesa, int* res, int* forca, int* esq, int* acao, int dano, int* atkBase, int* enemyHP, int* contraataque, int* burnMago, bool* stun, int* pocaoHP, int* pocaoMP){
-if (magiaMenu == true) //tinha um erro aqui, ja corrigi (Vitor)
+if (magiaMenu) //tinha um erro aqui, ja corrigi (Vitor), Corrigi dnv não precisa colocar === true dentro de um if
 {
     switch(class) {
     case 1: //HABILIDADES DO GUERREIRO
