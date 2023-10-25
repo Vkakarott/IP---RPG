@@ -102,15 +102,6 @@ void divisor(){ //Função que mostra uma linha divisoria entre blocos
     printf("-----------------------------------------\n");
 }
 
-int enemyRest(char *array[]){ //Função que verifica quantos inimigos restam
-    int numMob = 0;
-
-    while (array[numMob] != NULL) {
-        numMob++;
-    }
-    return numMob;
-}
-
 //Barra de status atual
 void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl, int pontos, int class, int pocaoHP, int pocaoMP) {
     int bar = 10; // Tamanho total da barra de HP
@@ -478,7 +469,7 @@ void checkWin(int HPAtual, int enemyHP, bool* jogando, bool* levelup, int* playe
 }
 
 //Proxima rodada
-void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, char* mobs, bool bossFinal){
+void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, char* mobs, bool bossFinal, int nMobs){
 
 switch (class){
             case 1:
@@ -539,7 +530,6 @@ switch (class){
             printf("Voce chegou no boss final O PROFESSOR!!!");
             //Criar boss final
         } else {
-            int nMobs = enemyRest(mobs);
             int enemyIndex = rand() % nMobs;
             sleep(1);
             white();
@@ -652,6 +642,7 @@ int main(){
     int atkBase;
     int enemyAtkIndex = 0;
     int playerLvl = 1;
+    int nMobs = 4;
     int pontos = 0;
     int enemyLvl = 1;
     int manaTemp = 0;
@@ -762,7 +753,6 @@ int main(){
 
     
     do {
-        int nMobs = enemyRest(mobs);
         enemyIndex = rand() % nMobs;
         sleep(1);
         if(nMobs > 0){
@@ -868,7 +858,7 @@ int main(){
 
             checkWin(HPAtual, enemyHP, &jogando, &levelUp, &playerLvl, &enemyLvl, &pontos, &contraataque, &burnMago, &enemyIndex, &nMobs, mobs, bossFinal);
             if (levelUp) {
-                escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal);
+                escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal, nMobs);
                 levelUp = false;
             }
         } while (jogando);
