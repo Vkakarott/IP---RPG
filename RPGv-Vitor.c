@@ -464,7 +464,7 @@ void checkWin(int HPAtual, int enemyHP, int *jogando, int *levelUp, int *playerL
         loading();
         yellow();
         printf("Voce ganhou +%d pontos!\n", *enemyLvl);
-        loading();
+        divisor();
     }
 }
 
@@ -525,6 +525,7 @@ switch (class){
                 printf("Meu deus eu devo ter feito muita merda\n");
                 break;
         }
+        divisor();
 
         if(bossFinal){
             printf("Voce chegou no boss final O PROFESSOR!!!");
@@ -533,7 +534,7 @@ switch (class){
             int enemyIndex = rand() % nMobs;
             sleep(1);
             white();
-            printf("VOCE ENCONTROU %s\n", mobs[enemyIndex]); //NAO SEI OQ TA ERRADO
+            printf("VOCE ENCONTROU %s\n", mobs[enemyIndex]);
             sleep(1);
             *enemyHPMax += 10 * enemyLvl;
             *enemyHP = *enemyHPMax;
