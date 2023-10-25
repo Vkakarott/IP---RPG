@@ -81,7 +81,7 @@ void abertura() {
         printf("\n");
     }
     printf("\n");
-    printf("\033[0;32mPRESSIONE ENTER PARA CONTINUAR\n");
+    printf("\033[0;32mPRESSIONE ENTER PARA JOGAR\n");
     getchar();
 }
 
@@ -180,7 +180,7 @@ void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax,
                     sleep(1);
                     for (int i = 0; i < 4; i ++) {
                     printf("DANO: %i\n", dano);
-                    sleep(1);
+                    usleep(10000);
                     }
                     break;
                 } else {
@@ -435,7 +435,7 @@ void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax,
 }
 
 //Verificar se a batalha acabou e o resultado
-void checkWin(int HPAtual, int enemyHP, bool* jogando, bool* levelup, int* playerLvl, int* enemyLvl, int* pontos, int* contraataque, int* burnMago, int* enemyIndex, int* nMobs, char **mobs, bool bossFinal) {
+void checkWin(int HPAtual, int enemyHP, int *jogando, int *levelUp, int *playerLvl, int *enemyLvl, int *pontos, int *contraataque, int *burnMago, int *enemyIndex, int *nMobs, const char *mobs[], int bossFinal) {
     sleep(1);
 
     if (HPAtual <= 0) {
@@ -460,7 +460,7 @@ void checkWin(int HPAtual, int enemyHP, bool* jogando, bool* levelup, int* playe
         *pontos += *enemyLvl;
         *contraataque = 0;
         *burnMago = 0;
-        *levelup = true;
+        *levelUp = true;
         loading();
         yellow();
         printf("Voce ganhou +%d pontos!\n", *enemyLvl);
@@ -469,7 +469,7 @@ void checkWin(int HPAtual, int enemyHP, bool* jogando, bool* levelup, int* playe
 }
 
 //Proxima rodada
-void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, char* mobs, bool bossFinal, int nMobs){
+void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, const char *mobs[], bool bossFinal, int nMobs){
 
 switch (class){
             case 1:
@@ -539,7 +539,6 @@ switch (class){
             *enemyHP = *enemyHPMax;
             *enemyBaseAtk += 2 * enemyLvl;
         }
-
 }
 
 //Função para os ataques específicos de inimigos
@@ -551,7 +550,7 @@ void inimigoAtacar(bool* inimigoAtacou, int enemyIndex, const char* mobs[], cons
         enemyAtkIndex = rand() % 3;
     }
     int lastEnemyAtkk = enemyAtkIndex;
-    if (enemyIndex == 0){        //Troll
+    if (strcmp(mobs[enemyIndex], "TROLL") == 0){        //Troll
         green();
         printf("%s USOU %s!\n", mobs[enemyIndex], atksTroll[enemyAtkIndex]);
         sleep(1);
@@ -571,7 +570,7 @@ void inimigoAtacar(bool* inimigoAtacou, int enemyIndex, const char* mobs[], cons
             printf("O INIMIGO AUMENTOU SEU ATK EM %d\n", (10 + 2 **enemyLvl) * 1/3);
         }
     }
-    if (enemyIndex == 1){   //Bruxa
+    if (strcmp(mobs[enemyIndex], "BRUXA") == 0){   //Bruxa
         purple();
         printf("%s USOU %s!\n", mobs[enemyIndex], atksBruxa[enemyAtkIndex]);
         sleep(1);
@@ -591,7 +590,7 @@ void inimigoAtacar(bool* inimigoAtacou, int enemyIndex, const char* mobs[], cons
             printf("O INIMIGO REDUZIU SUA RESISTENCIA EM 3\n");
         }
     }
-    if (enemyIndex == 2){   //Golem
+    if (strcmp(mobs[enemyIndex], "GOLEM") == 0){   //Golem
         cyan();
         printf("%s USOU %s!\n", mobs[enemyIndex], atksGolem[enemyAtkIndex]);
         sleep(1);
@@ -604,14 +603,14 @@ void inimigoAtacar(bool* inimigoAtacou, int enemyIndex, const char* mobs[], cons
             *inimigoAtacou = true;
         }
         if (enemyAtkIndex == 2) {   //Fortalecer
-            *enemyHPMax += (50 + 10 * *enemyLvl) * 1/3;
-            *enemyHP += (50 + 10 * *enemyLvl) * 1/3;
-            red();
+            *enemyHPMax += (50 + 7 * *enemyLvl) * 1/3;
+            *enemyHP += (50 + 7 * *enemyLvl) * 1/3;
+            cyan();
             printf("O INIMIGO AUMENTOU SEU HP EM %d\n", (50 + 10 * *enemyLvl) * 1/3);
         }
 
     }
-    if (enemyIndex == 3) {   //Dragao
+    if (strcmp(mobs[enemyIndex], "DRAGAO") == 0) {   //Dragao
         red();
         printf("%s USOU %s!\n", mobs[enemyIndex], atksDragao[enemyAtkIndex]);
         sleep(1);
