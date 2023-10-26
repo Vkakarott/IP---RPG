@@ -234,13 +234,13 @@ void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax,
         break;
             case 2: //HABILIDADES DE PALADINO
             cyan();
-            printf("Escolha uma magia:\n[1] Investida de Escudo (-%iMP)\n[2] Rezar (-%iMP+%iHP)\n[3] Parede Inquebravel (-%iMP)\n[4] Protecao Divina(-%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima*2/3, *manaMax/2, *manaMax/3);
+            printf("Escolha uma magia:\n[1] Investida de Escudo (-%iMP)\n[2] Rezar (-%iMP+%iHP)\n[3] Parede Inquebravel (-%iMP)\n[4] Protecao Divina(-%iMP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima*2/3, *manaMax*2/3, *manaMax/3);
             input("%i",&*acao);
             sleep(1);
             switch (*acao){
                 case 1:
-                if (*manaAtual >= 3/4**manaMax) {
-                    *manaAtual -= 3/4**manaMax;
+                if (*manaAtual >= 3/4 * *manaMax) {
+                    *manaAtual -= 3 * *manaMax/4;
                     dano = 1.3 * *atkBase * (1+0.1 * *res);
                     *enemyHP -= dano;
                     printf("VOCE USOU INVESTIDA DE ESCUDO E GASTOU %d MANA!\n", *manaMax*3/4);
@@ -270,7 +270,7 @@ void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax,
                 }
                 case 3:
                 if (*manaAtual >= *manaMax*2/3) {
-                    *manaAtual -= *manaMax/2;
+                    *manaAtual -= *manaMax*2/3;
                     *res += *manaMax/6;
                     cyan();
                     printf("VOCE USOU PAREDE INQUEBRAVEL, GASTOU %d DE MANA E RECEBEU %d DE RESISTENCIA\n", *manaMax*2/3, *manaMax/6);
@@ -358,8 +358,8 @@ void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax,
                     break;
                 default:
                     break;
-                break;
             }
+            break;
             case 4:
             green();
             printf("Escolha uma magia:\n[1] Tiro potente (-%iMP)\n[2] Usar pocao de cura (+%iHP)\n[3] Tiro enfraquecedor (-%iMP)\n[4] Usar pocao de mana(+%iMP)\n[Outro] Voltar\n", *manaMax, *HPMaxima, *manaMax/2, *manaMax);
@@ -469,7 +469,7 @@ void checkWin(int HPAtual, int enemyHP, int *jogando, int *levelUp, int *playerL
 }
 
 //Proxima rodada
-void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, const char *mobs[], bool bossFinal, int nMobs){
+void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, const char *mobs[], bool bossFinal, int nMobs, int enemyIndex){
 
 switch (class){
             case 1:
@@ -531,10 +531,11 @@ switch (class){
             printf("Voce chegou no boss final O PROFESSOR!!!");
             //Criar boss final
         } else {
-            int enemyIndex = rand() % nMobs;
+            enemyIndex = rand() % nMobs;
+            int enemyIndex2 = enemyIndex;
             sleep(1);
             white();
-            printf("VOCE ENCONTROU %s\n", mobs[enemyIndex]);
+            printf("VOCE ENCONTROU %s\n", mobs[enemyIndex2]);
             sleep(1);
             *enemyHPMax += 10 * enemyLvl;
             *enemyHP = *enemyHPMax;
@@ -661,6 +662,7 @@ int main(){
     int pocaoHP;
     int pocaoMP;
     int enemyIndex;
+    int enemyIndex2;
     int enemyHPMax;
     int enemyHP;
     int danoEnemy;
@@ -858,7 +860,7 @@ int main(){
 
             checkWin(HPAtual, enemyHP, &jogando, &levelUp, &playerLvl, &enemyLvl, &pontos, &contraataque, &burnMago, &enemyIndex, &nMobs, mobs, bossFinal);
             if (levelUp) {
-                escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal, nMobs);
+                escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal, nMobs, &enemyIndex);
                 levelUp = false;
             }
         } while (jogando);
