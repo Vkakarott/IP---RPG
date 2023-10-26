@@ -135,7 +135,7 @@ void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl
     }
     printf("] %d/%d     ", manaAtual, manaMax);
     yellow();
-    printf("LEVEL: %d\n", playerLvl);
+    printf("LEVEL: %d\n", playerLvl+1);
     if (class == 4) {
         green();
         printf("POCOES DE CURA: %d   POCOES DE MANA: %d\n", pocaoHP, pocaoMP);
@@ -143,11 +143,15 @@ void status(int HPAtual, int HPMaxima, int manaMax, int manaAtual, int playerLvl
 }
 
 //Status do inimigo
-void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *mobs[], int enemyIndex){
+void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *mobs[], int enemyIndex, bool bossFinal){
     int bar = 10;
     int barEny = (int)((double)enemyHP / enemyHPMax * bar);
     red();
+    if (bossFinal == false) {
     printf("HP %s: [", mobs[enemyIndex]);
+    } else {
+        printf("HP PROF: [");
+    }
     for(int i = 0; i < bar; i++){
         if(i < barEny){
             printf("#");
@@ -157,7 +161,7 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *mobs[], int 
     }
     printf("] %d/%d ", enemyHP, enemyHPMax);
     yellow();
-    printf("LVL: %d\n", enemyLvl);
+    printf("LVL: %d\n", enemyLvl+1);
 }
 
 //Menu de magias
@@ -435,14 +439,14 @@ void magia(int class, bool magiaMenu, int* HPMaxima, int* HPAtual, int* manaMax,
 }
 
 //Verificar se a batalha acabou e o resultado
-void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playerLvl, int *enemyLvl, int *pontos, int *contraataque, int *burnMago, int *enemyIndex, int *nMobs, const char *mobs[], int bossFinal) {
+void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playerLvl, int *enemyLvl, int *pontos, int *contraataque, int *burnMago, int *enemyIndex, int *nMobs, const char *mobs[], bool *bossFinal) {
     Sleep(1000);
 
     if (HPAtual <= 0) {
         white();
         printf("Voce morreu. Fim de jogo.\n");
         *jogando = false;
-    } else if ((enemyHP <= 0)&&(bossFinal == false)) {
+    } else if ((enemyHP <= 0)&&(*bossFinal == false)) {
         white();
         printf("Voce derrotou o inimigo!\n");
 
@@ -453,7 +457,7 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playe
         mobs[mobsCount - 1] = NULL;
         (*nMobs)--;
         if (*nMobs < 1) { 
-            bossFinal = true;
+            *bossFinal = true;
         }
         *playerLvl += 1;
         *enemyLvl += *playerLvl;
@@ -467,7 +471,7 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playe
         printf("Voce ganhou +%d pontos!\n", *enemyLvl);
         Sleep(1000);
         divisor();
-    } else if ((enemyHP <= 0)&&(bossFinal == true)) {
+    } else if ((enemyHP <= 0)&&(*bossFinal == true)) {
         white();
         printf("VOCE DERROTOU O SER MAIS FORTE DE TODOS, O PROFESSOR\n");
         Sleep(1000);
@@ -477,56 +481,56 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playe
 }
 
 //Proxima rodada
-void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, const char *mobs[], bool bossFinal, int nMobs){
+void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual, int* manaTempMax, int* manaTemp, int playerLvl, int enemyLvl, int* enemyHPMax, int* enemyHP, int* enemyBaseAtk, int* pocaoHP, int* pocaoMP, const char *mobs[], bool bossFinal, int nMobs, int *enemyIndex){
 
 switch (class){
             case 1:
-                *atkBase = 7+3*playerLvl;
+                *atkBase = 10+3*playerLvl;
                 *res = 1;
-                *forca = 1 + 1*playerLvl;
-                *HPMaxima = 40 + 10*playerLvl;
+                *forca = 2 + 1*playerLvl;
+                *HPMaxima = 50 + 10*playerLvl;
                 *HPAtual = *HPMaxima;
-                *manaMax = 16 + 4*playerLvl;
+                *manaMax = 20 + 4*playerLvl;
                 *manaAtual = *manaMax;
                 yellow();
                 printf("LEVEL UP! Voce recebeu:\n+3 ATK\n+1 FORCA\n+10 HP\n+4 MANA\n");
                 break;
             case 2:
-                *atkBase = 8 + 2*playerLvl;
-                *res = 1 + 1*playerLvl;
+                *atkBase = 10 + 2*playerLvl;
+                *res = 2 + 1*playerLvl;
                 *forca = 0;
-                *HPMaxima = 45 + 15*playerLvl;
+                *HPMaxima = 60 + 15*playerLvl;
                 *HPAtual = *HPMaxima;
-                *manaMax = 24 + 6*playerLvl;
+                *manaMax = 30 + 6*playerLvl;
                 *manaAtual = *manaMax;
                 yellow();
                 printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+1 RES\n+15 HP\n+6 MANA\n");
                 break;
             case 3:
-                *atkBase = 8 + 2*playerLvl;
+                *atkBase = 10 + 2*playerLvl;
                 *res = 0;
                 *forca = 0;
-                *HPMaxima = 36 + 12 * playerLvl;
+                *HPMaxima = 45 + 9 * playerLvl;
                 *HPAtual = *HPMaxima;
-                *manaMax = 40 + 10 * playerLvl;
+                *manaMax = 50 + 10 * playerLvl;
                 *manaAtual = *manaMax;
                 *manaTemp = 0;
                 *manaTempMax = *manaMax;
                 yellow();
-                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+10 HP\n+10 MANA\n");
+                printf("LEVEL UP! Voce recebeu:\n+2 ATK\n+9 HP\n+10 MANA\n");
                 break;
             case 4:
-                *atkBase = 10 + 4*playerLvl;
+                *atkBase = 14 + 4*playerLvl;
                 *res = 0;
                 *forca = 0;
-                *HPMaxima = 32 + 8*playerLvl;
+                *HPMaxima = 50 + 10*playerLvl;
                 *HPAtual = *HPMaxima;
-                *manaMax = 18 + 2*playerLvl;
+                *manaMax = 20 + 2*playerLvl;
                 *manaAtual = *manaMax;
                 *pocaoHP = 2;
                 *pocaoMP = 2;
                 yellow();
-                printf("LEVEL UP! Voce recebeu:\n+4 ATK\n+8 HP\n+2 MANA\n");
+                printf("LEVEL UP! Voce recebeu:\n+4 ATK\n+10 HP\n+2 MANA\n");
                 break;
             default:
                 red();
@@ -535,20 +539,21 @@ switch (class){
         }
         divisor();
 
-        if(bossFinal){
-            printf("Voce chegou no boss final O PROFESSOR!!!");
-            *enemyHPMax = 250;
+        if(bossFinal == true){
+            loading();
+            printf("Voce chegou no boss final O PROFESSOR!!!\n");
+            *enemyHPMax = 180;
             *enemyHP = *enemyHPMax;
             *enemyBaseAtk = 20;
         } else {
-            int enemyIndex = rand() % nMobs;
+            *enemyIndex = rand() % nMobs;
             Sleep(1000);
             white();
-            printf("VOCE ENCONTROU %s\n", mobs[enemyIndex]);
+            printf("VOCE ENCONTROU %s\n", mobs[*enemyIndex]);
             Sleep(1000);
-            *enemyHPMax = 40 + 10 * enemyLvl;
+            *enemyHPMax = 50 + 10 * enemyLvl;
             *enemyHP = *enemyHPMax;
-            *enemyBaseAtk = 8 + 2 * enemyLvl;
+            *enemyBaseAtk = 10 + 2 * enemyLvl;
         }
 }
 
@@ -560,7 +565,7 @@ void inimigoAtacar(bool* inimigoAtacou, bool bossFinal, int enemyIndex, const ch
         } else {
             enemyAtkIndex = rand() % 3;
         }
-        int lastEnemyAtkk = enemyAtkIndex;
+        int lastEnemyAtk = enemyAtkIndex;
             if (strcmp(mobs[enemyIndex], "TROLL") == 0){        //Troll
                 green();
                 printf("%s USOU %s!\n", mobs[enemyIndex], atksTroll[enemyAtkIndex]);
@@ -649,6 +654,8 @@ void inimigoAtacar(bool* inimigoAtacou, bool bossFinal, int enemyIndex, const ch
             } else {
                 enemyAtkIndex = rand() % 4;
             }   
+            int lastEnemyAtk = enemyAtkIndex;
+            
             if (enemyAtkIndex == 0) {   //Sla 1
                     *inimigoAtk = *inimigoBaseAtk;
                     *inimigoAtacou = true;
@@ -680,10 +687,10 @@ int main(){
     int class;
     int atkBase;
     int enemyAtkIndex = 0;
-    int playerLvl = 1;
+    int playerLvl = 0;
     int nMobs = 4;
     int pontos = 0;
-    int enemyLvl = 1;
+    int enemyLvl = 0;
     int manaTemp = 0;
     int defesa = 0;
     int contraataque = 0;
@@ -792,7 +799,7 @@ int main(){
     } while (repeat);
 
     
-    do {
+
         enemyIndex = rand() % nMobs;
         Sleep(1000);
         if(nMobs > 0){
@@ -809,7 +816,7 @@ int main(){
             divisor();
             status(HPAtual, HPMaxima, manaMax, manaAtual, playerLvl, pontos, class, pocaoHP, pocaoMP);
             divisor();
-            hpEnemy(enemyHP, enemyHPMax, enemyLvl, mobs, enemyIndex);
+            hpEnemy(enemyHP, enemyHPMax, enemyLvl, mobs, enemyIndex, bossFinal);
             if(class==1) red();
             if(class==2) cyan();
             if(class==3) purple();
@@ -896,13 +903,12 @@ int main(){
             if (enemyHP < 0) enemyHP = 0;                  //
 
             defesa = 0;  //resetar a defesa no final do turno
-            checkWin(HPAtual, enemyHP, &jogando, &levelUp, &playerLvl, &enemyLvl, &pontos, &contraataque, &burnMago, &enemyIndex, &nMobs, mobs, bossFinal);
+            checkWin(HPAtual, enemyHP, &jogando, &levelUp, &playerLvl, &enemyLvl, &pontos, &contraataque, &burnMago, &enemyIndex, &nMobs, mobs, &bossFinal);
             if (levelUp) {
-                escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal, nMobs);
+                escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal, nMobs, &enemyIndex);
                 levelUp = false;
-            }
+        }
         } while (jogando);
         
-    } while (jogando);
     
 }
