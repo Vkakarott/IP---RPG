@@ -40,6 +40,7 @@ void loading(){ //Função que mostra os 3 pontinhos
 
 void abertura() {
     const char *lines[] = {
+        "                                                          ",
         "         _____                  _____     _____    _______",
         "|   /   |     |   |\\      /|   |     |   |     |      |  ",
         "|  /    |     |   | \\    / |   |     |   |     |      |  ",
@@ -61,12 +62,11 @@ void abertura() {
         "|     \\   |         |_____|                              "
     };
 
-    int numLinhas = 19;
+    int numLinhas = 20;
     int numCol = 59;
     int lin;
     int col;
     
-    getchar();
 
     for (lin = 0; lin < numLinhas; lin++) {
         for (col = 0; col < numCol; col++) {
@@ -150,7 +150,7 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *mobs[], int 
     if (bossFinal == false) {
     printf("HP %s: [", mobs[enemyIndex]);
     } else {
-        printf("HP PROF: [");
+        printf("HP HEBERT: [");
     }
     for(int i = 0; i < bar; i++){
         if(i < barEny){
@@ -183,10 +183,11 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                     sleep(1);
                     for (int i = 0; i < 4; i ++) {
                     printf("DANO: %i\n", dano);
-                    sleep(1);
+                    usleep(100000);
                     }
                     break;
                 } else {
+
                     blue();
                     printf("Sem mana suficiente\n");
                     *acao = 5;
@@ -483,7 +484,7 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playe
         white();
         printf("VOCE DERROTOU O SER MAIS FORTE DE TODOS, O PROFESSOR\n");
         sleep(1);
-        printf("VITORIA\n");
+        printf("AGORA VAI TER FERIADO!\n");
         *jogando = false;
     }
 }
@@ -654,33 +655,33 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, bool bossFinal, int e
                 }
             }
         } else {
-            yellow();
-            printf("O PROFESSOR USOU %s\n", atksProf[enemyAtkIndex]);
-            sleep(1);
             if (*lastEnemyAtk == 3){
                 enemyAtkIndex = rand() % 3;
             } else {
                 enemyAtkIndex = rand() % 4;
             }   
+            yellow();
+            printf("O PROFESSOR USOU %s\n", atksProf[enemyAtkIndex]);
+            sleep(1);
             *lastEnemyAtk = enemyAtkIndex;
             
-            if (enemyAtkIndex == 0) {   //Sla 1
+            if (enemyAtkIndex == 0) {   //Erro no Sharif
                 *inimigoAtk = *inimigoBaseAtk;
                 *inimigoAtacou = true;
             }
-            if (enemyAtkIndex == 1)  {  //Sla 2
+            if (enemyAtkIndex == 1)  {  //Prova Surpresa
                 *inimigoAtk = *inimigoBaseAtk * 5/3;
                 *inimigoAtacou = true;
             }
-            if (enemyAtkIndex == 2) {   //Sla 4
+            if (enemyAtkIndex == 2) {   //Reajuste Salarial
                 *inimigoBaseAtk += 20 * 1/3;
                 yellow();
-                printf("O PROFESSOR AUMENTOU SEU ATK EM %d\n", 20 * 1/3);
+                printf("O SALARIO DO PROFESSOR AUMENTOU, SEU ATK CRESCEU EM %d\n", 20 * 1/3);
             }
-            if (enemyAtkIndex == 3) {   //Sla 3
+            if (enemyAtkIndex == 3) {   //Aula no Feriado
                *res -= 4;
                yellow();
-               printf("O PROFESSOR REDUZIU SUA MORAL EM 4\n"); 
+               printf("O PROFESSOR NAO VAI EMENDAR O FERIADO, REDUZIU SUA MORAL EM 4\n"); 
             }  
         }
     
@@ -733,7 +734,7 @@ int main(){
     const char *atksBruxa[] = {"Raio Sombrio","Gas Toxico","Atolar",};
     const char *atksGolem[] = {"Impacto Meteoro","Terremoto","Fortalecer",};
     const char *atksDragao[] = {"Chamas Infernais","Furacao","Rugido Draconico",};
-    const char *atksProf[] = {"Sla 1", "Sla 2", "Aula no feriado", "Sla 4",};
+    const char *atksProf[] = {"Erro no Sharif", "Prova Surpresa", "Reajuste Salarial" ,"Aula no Feriado",};
 
     //Start
     abertura();
@@ -842,7 +843,6 @@ int main(){
             } else if (acao == 2) {
                 magia(class, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTemp, manaTempMax, &defesa, &res, &forca, &acao, dano, &atkBase, &enemyHP, &contraataque, &burnMago, &stun, &pocaoHP, &pocaoMP);
                 if (acao > 4 || acao <1) {
-                    sleep(1);
                 continue;
                 }   
             } else if (acao ==3) { //defender
@@ -894,6 +894,7 @@ int main(){
                 }
                 
                 if (burnMago != 0) {
+
                     enemyHP -= burnMago;
                     HPAtual += burnMago;
                     burnMago -= burnMago/4;                 //burn reduz em 25%/turno
