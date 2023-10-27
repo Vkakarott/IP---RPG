@@ -167,7 +167,7 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *mobs[], int 
     if (burnMago == 0) {
         printf("LVL: %d\n", enemyLvl+1);
     } else {
-        printf("LVL: %d    FURIA: %d\n", 99, burnMago);
+        printf("LVL: %d    FURIA: %d\n", enemyLvl+1, burnMago);
     }
 
 }
@@ -438,7 +438,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 if (*pocaoMP > 0) {
                     *pocaoMP -= 1;
                     *manaAtual += *manaMax;
-                    *defesa += *HPMaxima/4;
+                    *defesa += *HPMaxima/5;
                     green();
                     printf("VOCE USOU UMA POCAO MAGICA, BLOQUEOU %d DE DANO, RECEBEU %d MANA\n", *defesa,*manaMax);
                     sleep(1);
@@ -458,7 +458,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
 }
 
 //Verificar se a batalha acabou e o resultado
-void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playerLvl, int *enemyLvl, int *contraataque, int *burnMago, int *enemyIndex, int *nMobs, const char *mobs[], bool *bossFinal) {
+void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int*playerLvl, int *enemyLvl, int* exp, int *contraataque, int *burnMago, int *enemyIndex, int *nMobs, const char *mobs[], bool *bossFinal) {
     sleep(1);
 
     if (HPAtual <= 0) {
@@ -467,7 +467,9 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int *playe
         *jogando = false;
     } else if ((enemyHP <= 0)&&(*bossFinal == false)) {
         white();
-        printf("Voce derrotou o inimigo!\n");
+        int Xp = 10 * (*enemyLvl + 1);
+        *exp += Xp;
+        printf("Voce derrotou o inimigo! (+%d XP)\n", Xp);
 
         int mobsCount = *nMobs;
         for (int i = *enemyIndex; i < mobsCount - 1; i++) {
@@ -573,7 +575,7 @@ switch (class){
 }
 
 //Função para os ataques específicos de inimigos
-void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, bool bossFinal, int enemyIndex, const char* mobs[], const char* atksTroll[], const char* atksBruxa[], const char* atksGolem[], const char* atksDragao[], const char* atksProf[], int *inimigoBaseAtk, int* inimigoAtk, int *enemyHPMax, int *enemyHP, int *res, int *enemyLvl,int enemyAtkIndex) {
+void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, bool bossFinal, int enemyIndex, const char* mobs[], const char* atksTroll[], const char* atksBruxa[], const char* atksGolem[], const char* atksDragao[], const char* atksProf[], int *inimigoBaseAtk, int* inimigoAtk, int *enemyHPMax, int *enemyHP, int *res, int *enemyLvl,int enemyAtkIndex, int defesa, int* HPAtual) {
     if (bossFinal == false) {
         if (*lastEnemyAtk == 2){
             enemyAtkIndex = rand() % 2;
@@ -673,16 +675,35 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, bool bossFinal, int e
             
             if (enemyAtkIndex == 0) {   //Erro no Sharif
                 *inimigoAtk = *inimigoBaseAtk * 4/3;
-                *inimigoAtacou = true;
-            }
+                int danoInimigo = (*inimigoAtk - defesa)/(1 + 0.1 * *res);
+                if (danoInimigo < 0) danoInimigo = 0;
+                *HPAtual -= danoInimigo;
+                sleep(1);
+                printf("TEST 1: WRONG\n");
+                printf("DANO: %d\n", danoInimigo/4);
+                sleep(1);
+                printf("RUNTIME ERROR\n");
+                sleep(1);
+                printf("DANO: %d\n", danoInimigo/4);
+                sleep(1);
+                printf("OUTPUT SIZE LIMIT EXCEEDED\n");
+                sleep(1);
+                printf("DANO: %d\n", danoInimigo/4);
+                sleep(1);
+                printf("ERRO DE COMPILACAO\n");
+                sleep(1);
+                printf("DANO: %d\n", danoInimigo/4);
+                sleep(1);
+                }
+                
             if (enemyAtkIndex == 1)  {  //Prova Surpresa
                 *inimigoAtk = *inimigoBaseAtk * 5/3;
                 *inimigoAtacou = true;
             }
             if (enemyAtkIndex == 2) {   //Reajuste Salarial
-                *inimigoBaseAtk += 20 * 1/3;
+                *inimigoBaseAtk += 20 * 2/5;
                 yellow();
-                printf("O SALARIO DO PROFESSOR AUMENTOU, SEU ATK CRESCEU EM %d\n", 20 * 1/3);
+                printf("O SALARIO DO PROFESSOR AUMENTOU, SEU ATK CRESCEU EM %d\n", 20 * 2/5);
             }
             if (enemyAtkIndex == 3) {   //Aula no Feriado
                *res -= 4;
@@ -690,8 +711,8 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, bool bossFinal, int e
                printf("O PROFESSOR NAO VAI EMENDAR O FERIADO, REDUZIU SUA MORAL EM 4\n"); 
             }  
         }
-    
 }
+
 
 //Função principal
 int main(){
@@ -708,6 +729,7 @@ int main(){
     int defesa = 0;
     int contraataque = 0;
     int burnMago = 0;
+    int exp;
     int acao;
     int dano;
     int res;
@@ -869,7 +891,7 @@ int main(){
             // Inimigo ataca
             if(enemyHP > 0){
                 if (stun == false) {  //Verifica se o inimigo esta atordoado
-                inimigoAtacar(&inimigoAtacou, &lastEnemyAtk, bossFinal, enemyIndex, mobs, atksTroll, atksBruxa, atksGolem, atksDragao, atksProf, &inimigoBaseAtk, &inimigoAtk, &enemyHPMax, &enemyHP, &res, &enemyLvl, enemyAtkIndex);
+                inimigoAtacar(&inimigoAtacou, &lastEnemyAtk, bossFinal, enemyIndex, mobs, atksTroll, atksBruxa, atksGolem, atksDragao, atksProf, &inimigoBaseAtk, &inimigoAtk, &enemyHPMax, &enemyHP, &res, &enemyLvl, enemyAtkIndex, defesa, &HPAtual);
                 if (inimigoAtacou == true) {  // verificar se o inimigo atacou
                     danoInimigo = (inimigoAtk - defesa) / (1 + 0.1 * res);                   
                     if (danoInimigo < 0) danoInimigo = 0;   // dano do inimigo não ficar negativo por causa da formula de defesa
@@ -915,7 +937,7 @@ int main(){
             if (enemyHP < 0) enemyHP = 0;                  //
 
             defesa = 0;  //resetar a defesa no final do turno
-            checkWin(HPAtual, enemyHP, &jogando, &levelUp, &playerLvl, &enemyLvl, &contraataque, &burnMago, &enemyIndex, &nMobs, mobs, &bossFinal);
+            checkWin(HPAtual, enemyHP, &jogando, &levelUp, &playerLvl, &enemyLvl, &exp, &contraataque, &burnMago, &enemyIndex, &nMobs, mobs, &bossFinal);
             if (levelUp) {
                 escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal, nMobs, &enemyIndex);
                 levelUp = false;
@@ -923,5 +945,6 @@ int main(){
     
     } while (jogando);
         
+    printf("XP: %d", exp);
     
 }
