@@ -925,5 +925,5 @@ int main(){
         }
         } while (jogando);
         
-    
+    printf("XP: %d", Xp);
 }
