@@ -879,7 +879,7 @@ int main(){
             if(class==2) cyan();
             if(class==3) purple();
             if(class==4) green();
-            printf("SELECIONE A ACAO\n[1] ATAQUE BASICO\n[2] MAGIA\n[3] DEFENDER\n[4] SAIR\n");
+            printf("SELECIONE A ACAO\n[1] ATAQUE BASICO ( %s )\n[2] MAGIA\n[3] DEFENDER\n[4] SAIR\n", atksBasicos[class]);
             input("%i", &acao);
             sleep(1);
             if(class==1) red();
