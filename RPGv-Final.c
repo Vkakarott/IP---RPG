@@ -184,8 +184,11 @@ void result(int danoT, int danoR, int exp){
     divisor();
     printf("|                       RESUMO DA PARTIDA                        |\n");
     divisor();
+    sleep(1);
     printf(" Dano causado: %d\n", danoT);
+    sleep(1);
     printf(" Dano Recebido: %d\n", danoR);
+    sleep(1);
     printf(" EXP: %d\n", exp);
     divisor();
 }
@@ -306,9 +309,9 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 case 3:
                 if (*manaAtual >= *manaMax*3/5) {
                     *manaAtual -= *manaMax*3/5;
-                    *res += *manaMax/6;
+                    *res += *manaMax/9;
                     cyan();
-                    printf("VOCE USOU DEFESA DE FERRO, GASTOU %d DE MANA E RECEBEU %d DE RESISTENCIA\n", *manaMax*3/5, *manaMax/6);
+                    printf("VOCE USOU DEFESA DE FERRO, GASTOU %d DE MANA E RECEBEU %d DE RESISTENCIA\n", *manaMax*3/5, *manaMax/9);
                     sleep(1);
                     break;
                 }  else {
@@ -600,7 +603,7 @@ switch (class){
 //Função para os ataques específicos de inimigos
 void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, int* danoR, bool bossFinal, int enemyIndex, const char* mobs[], const char* atksTroll[], const char* atksBruxa[], const char* atksGolem[], const char* atksDragao[], const char* atksProf[], int *inimigoBaseAtk, int* inimigoAtk, int *enemyHPMax, int *enemyHP, int *res, int *enemyLvl,int enemyAtkIndex, int defesa, int* HPAtual) {
     if (bossFinal == false) {
-        if (*lastEnemyAtk == 2){
+        if (*lastEnemyAtk == 2|| *res < -7){
             enemyAtkIndex = rand() % 2;
         } else {
             enemyAtkIndex = rand() % 3;
@@ -641,9 +644,9 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, int* danoR, bool boss
                 }
 
                 if (enemyAtkIndex == 2) {    // Atolar
-                    *res -= *inimigoBaseAtk * 2/5;
+                    *res -= 3;
                     purple();
-                    printf("O INIMIGO REDUZIU SUA RESISTENCIA EM %d\n", *inimigoBaseAtk * 2/5);
+                    printf("O INIMIGO REDUZIU SUA RESISTENCIA EM 3\n");
                 }
             }
             if (strcmp(mobs[enemyIndex], "GOLEM") == 0){   //Golem
@@ -659,8 +662,8 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, int* danoR, bool boss
                     *inimigoAtacou = true;
                 }
                 if (enemyAtkIndex == 2) {   //Fortalecer
-                    *enemyHPMax += (50 + 7 * *enemyLvl) * 1/3;
-                    *enemyHP += (50 + 7 * *enemyLvl) * 1/3;
+                    *enemyHPMax += (50 + 10 * *enemyLvl) * 1/3;
+                    *enemyHP += (50 + 10 * *enemyLvl) * 1/3;
                     cyan();
                     printf("O INIMIGO AUMENTOU SEU HP EM %d\n", (50 + 10 * *enemyLvl) * 1/3);
                 }
@@ -686,7 +689,7 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, int* danoR, bool boss
                 }
             }
         } else {
-            if (*lastEnemyAtk == 3){
+            if (*lastEnemyAtk == 3|| *res < -8){
                 enemyAtkIndex = rand() % 3;
             } else {
                 enemyAtkIndex = rand() % 4;
@@ -698,7 +701,7 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, int* danoR, bool boss
             
             if (enemyAtkIndex == 0) {   //Erro no Sharif
                 *inimigoAtk = *inimigoBaseAtk * 4/3;
-                int danoInimigo = (*inimigoAtk - defesa - 2 * *res);
+                int danoInimigo = (*inimigoAtk - defesa)/(1+*res*0.1);           
                 if (danoInimigo < 0) danoInimigo = 0;
                 *danoR += danoInimigo;
                 *HPAtual -= danoInimigo;
@@ -731,9 +734,9 @@ void inimigoAtacar(bool* inimigoAtacou, int* lastEnemyAtk, int* danoR, bool boss
                 printf("O SALARIO DO PROFESSOR AUMENTOU, SEU ATK CRESCEU EM %d\n", 20 * 2/5);
             }
             if (enemyAtkIndex == 3) {   //Aula no Feriado
-               *res -= 6;
+               *res -= 4;
                yellow();
-               printf("O PROFESSOR NAO VAI EMENDAR O FERIADO, REDUZIU SUA MORAL EM 6\n"); 
+               printf("O PROFESSOR NAO VAI EMENDAR O FERIADO, REDUZIU SUA MORAL EM 4\n"); 
             }  
         }
 }
@@ -778,7 +781,6 @@ int main(){
     bool levelUp = false;
     bool inimigoAtacou = false;
     bool stun = false;
-    bool repeat = true;
     bool jogando = true;
     bool bossFinal = false;
 
@@ -810,7 +812,6 @@ int main(){
                 manaAtual = manaMax;
                 red();
                 printf("Voce escolheu o Guerreiro!\n");
-                repeat = false;
                 break;
             case 2:
                 atkBase = 10;
@@ -822,7 +823,6 @@ int main(){
                 manaAtual = manaMax;
                 cyan();
                 printf("Voce escolheu o Paladino!\n");
-                repeat = false;
                 break;
             case 3:
                 atkBase = 8;
@@ -835,7 +835,6 @@ int main(){
                 manaTempMax = manaMax;
                 purple();
                 printf("Voce escolheu o Mago!\n");
-                repeat = false;
                 break;
             case 4:
                 atkBase = 14;
@@ -849,13 +848,12 @@ int main(){
                 pocaoMP = 2;
                 green();
                 printf("Voce escolheu o Arqueiro!\n");
-                repeat = false;
                 break;
             default:
                 printf("Classe invalida! Tente novamente.\n");
                 break;
         }
-    } while (repeat);
+    } while (class < 1|| class > 4);
 
     
 
@@ -890,7 +888,7 @@ int main(){
 
             if(acao == 1){
                 if (class==1) dano = atkBase * (1+0.1*forca);
-                if (class==2) dano = atkBase * (1+0.8*res);
+                if (class==2) dano = atkBase * (1+0.05*res);
                 if (class==3) dano = atkBase * (1+0.015*manaMax);
                 if (class==4) dano = atkBase * 1.2 * (1+0.1*forca);
                 enemyHP -= dano;
@@ -924,7 +922,7 @@ int main(){
                 if (stun == false) {  //Verifica se o inimigo esta atordoado
                 inimigoAtacar(&inimigoAtacou, &lastEnemyAtk, &danoR, bossFinal, enemyIndex, mobs, atksTroll, atksBruxa, atksGolem, atksDragao, atksProf, &inimigoBaseAtk, &inimigoAtk, &enemyHPMax, &enemyHP, &res, &enemyLvl, enemyAtkIndex, defesa, &HPAtual);
                 if (inimigoAtacou == true) {  // verificar se o inimigo atacou
-                    danoInimigo = (inimigoAtk - defesa - 2 * res);                   
+                    int danoInimigo = (inimigoAtk - defesa)/(1+res*0.1);           
                     if (danoInimigo < 0) danoInimigo = 0;   // dano do inimigo não ficar negativo por causa da formula de defesa
                     danoR += danoInimigo;
                     HPAtual -= danoInimigo;
@@ -972,6 +970,7 @@ int main(){
             checkWin(HPAtual, enemyHP, &jogando, &levelUp, &playerLvl, &enemyLvl, &exp, &contraataque, &burnMago, &enemyIndex, &nMobs, mobs, &bossFinal);
             if (levelUp) {
                 escalamento(class, &atkBase, &res, &forca, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTempMax, &manaTemp, playerLvl, enemyLvl, &enemyHPMax, &enemyHP, &inimigoBaseAtk, &pocaoHP, &pocaoMP, mobs, bossFinal, nMobs, &enemyIndex);
+                stun = false;
                 levelUp = false;
         }
     
