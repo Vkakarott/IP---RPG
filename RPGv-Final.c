@@ -791,6 +791,7 @@ int main(){
     const char *atksGolem[] = {"Impacto Meteoro","Terremoto","Fortalecer",};
     const char *atksDragao[] = {"Chamas Infernais","Furacao","Rugido Draconico",};
     const char *atksProf[] = {"Erro no Sharif", "Prova Surpresa", "Reajuste Salarial" ,"Aula no Feriado",};
+    const char *atksBasicos[] = {NULL, "Corte com espada", "Golpe com escudo", "Missil Magico", "Tiro Fraco"};
 
     //Start
     abertura();
@@ -878,7 +879,7 @@ int main(){
             if(class==2) cyan();
             if(class==3) purple();
             if(class==4) green();
-            printf("SELECIONE A ACAO\n[1] ATAQUE NORMAL\n[2] MAGIA\n[3] DEFENDER\n[4] SAIR\n");
+            printf("SELECIONE A ACAO\n[1] ATAQUE BASICO\n[2] MAGIA\n[3] DEFENDER\n[4] SAIR\n");
             input("%i", &acao);
             sleep(1);
             if(class==1) red();
@@ -894,7 +895,7 @@ int main(){
                 enemyHP -= dano;
                 danoT += dano;
                 manaAtual += manaMax/10;
-                printf("VOCE USOU ATAQUE NORMAL, CAUSOU %d DE DANO E RECEBEU %d DE MANA\n", dano, manaMax/10);
+                printf("VOCE USOU %s, CAUSOU %d DE DANO E RECEBEU %d DE MANA\n", atksBasicos[class], dano, manaMax/10);
                 sleep(1);
             } else if (acao == 2) {
                 magia(class, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTemp, manaTempMax, &defesa, &res, &forca, &acao, dano, &atkBase, &enemyHP, &contraataque, &burnMago, &stun, &pocaoHP, &pocaoMP, &danoT);
@@ -951,14 +952,13 @@ int main(){
                 }
                 
                 if (burnMago != 0) {
-
                     enemyHP -= burnMago;
                     HPAtual += burnMago;
-                    burnMago -= burnMago/5;                 //burn reduz em 25%/turno
                     sleep(1);
                     purple();
-                    printf("VOCE SUGOU A ALMA DO SEU INIMIGO, CAUSANDO %d DE DANO E CURANDO %d DE VIDA\n", burnMago*5/4, burnMago*5/4);
+                    printf("VOCE SUGOU A ALMA DO SEU INIMIGO, CAUSANDO %d DE DANO E CURANDO %d DE VIDA\n", burnMago, burnMago);
                     sleep(1);
+                    burnMago -= burnMago/4;                 //burn reduz em 25%/turno
                 }
             }
             }
