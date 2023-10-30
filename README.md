@@ -34,7 +34,7 @@
     - fflush
     - sleep
     - usleep
-    - getch
+    - getchar
     - if
     - else
     - switch
