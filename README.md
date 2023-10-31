@@ -5,7 +5,9 @@
 
 <h4 align="center"> v1.0 Concluída ✅ Atualmente em hiato...<h4>
 
-###Features
+##
+
+### Features
 <p>RPG de texto<p>
 
 - [x] Escolha de Classes
@@ -13,18 +15,22 @@
 - [x] Seleção de inimigos aleatórios
 - [x] Ataques personalizados
 - [x] Sistema de níveis
-- [x] Boss final 
+- [x] Boss final
+
+##
 
 ### 🛠️ TECNOLOGIAS
- - LINGUAGEM C
- - BIBLIOTECAS #include
+
+ <img height="40" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" />
+ <h3>BIBLIOTECAS #include</h3>
+
     - <stdio.h> -> input e output
     - <stdbool.h> -> valores booleanos
     - <stdlib.h> -> valores aleatorios
     - <time.h> -> definir tempo (necessario para função rand)
     - <unistd.h> -> sleep no linux || <windows.h> -> sleep windons
     - <string.h> -> manipulação de strings
-
+ 
  - FUNÇÔES
     - for
     - while
@@ -39,5 +45,4 @@
     - else
     - switch
     - strcmp
-
-## Contribuição
+  
