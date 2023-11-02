@@ -33,18 +33,19 @@
     - <unistd.h> -> sleep no linux || <windows.h> -> sleep windons
     - <string.h> -> manipulação de strings
  
- - FUNÇÔES
-    - for
-    - while
-    - do while
-    - printf
-    - scanf
-    - fflush
-    - sleep
-    - usleep
-    - getchar
-    - if
-    - else
-    - switch
-    - strcmp
+ <h3>FUNÇÔES</h3>
+ 
+    - for()
+    - while()
+    - do while()
+    - printf()
+    - scanf()
+    - fflush()
+    - sleep()
+    - usleep()
+    - getchar()
+    - if()
+    - else()
+    - switch()
+    - strcmp()
   
