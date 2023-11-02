@@ -1,5 +1,7 @@
 <h1 align="center">KOMBAT RPG<h1>
 
+<img src="https://czfbfpenqxrbwpcuyeev.supabase.co/storage/v1/object/public/Imagens/gifs/RPG.gif?t=2023-11-02T19%3A56%3A43.519Z">
+
 ## Descrição do Projeto
 <p align="center">Mini projeto 1 do curso de IP da graduação de Ciências da computação - UFG<p>
 
