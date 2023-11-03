@@ -49,3 +49,9 @@
     - switch()
     - strcmp()
   
+## Autores
+<div align="center">
+  <a align="center" href="https://github.com/vkakarott/IP---RPG/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=vkakarott/IP---RPG" />
+  </a>
+</div>
