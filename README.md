@@ -33,7 +33,7 @@
     - <unistd.h> -> sleep no linux || <windows.h> -> sleep windons
     - <string.h> -> manipulação de strings
  
- <h3>FUNÇÔES</h3>
+ <h3>FUNÇÕES</h3>
  
     - for()
     - while()
