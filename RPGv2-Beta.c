@@ -200,6 +200,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
             red();
             printf("Escolha uma magia:\n[1] Golpe Ciclone (-%iMP)\n[2] Sifao (-%iMP)\n[3] Furia (-%iHP)\n[4] Descansar (+%iMP +%iHP)\n[Outro] Voltar\n", *manaMax*3/4, *manaMax/2, *HPMaxima/3, *manaMax, *HPMaxima/3);   
             input("%i",&*acao);
+            system("cls");
             sleep(1);
             switch (*acao){
             case 1:
@@ -217,7 +218,6 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                     }
                     break;
                 } else {
-
                     blue();
                     printf("Sem mana suficiente\n");
                     *acao = 5;
@@ -272,6 +272,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
             cyan();
             printf("Escolha uma magia:\n[1] Investida de Escudo (-%iMP)\n[2] Rezar (-%iMP +%iHP)\n[3] Defesa de Ferro (-%iMP)\n[4] Postura Divina (-%iMP)\n[Outro] Voltar\n", *manaMax*7/10, *manaMax/2, *HPMaxima/2, *manaMax*3/5, *manaMax/3);
             input("%i",&*acao);
+            system("cls");
             sleep(1);
             switch (*acao){
                 case 1:
@@ -343,6 +344,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
             purple();
             printf("Escolha uma magia:\n[1] Explosao De Mana (-%iMP)\n[2] Furia dos Espiritos (-%iMP +%iHP)\n[3] Sobrecarregar (+%iMPMAX)\n[4] Meditar (+%iMP)\n[Outro] Voltar\n", *manaMax-*manaTemp, (*manaMax-*manaTemp)/2, *HPMaxima/5, manaTempMax, *manaMax*3/4);
             input("%i",&*acao);
+            system("cls");
             sleep(1);
             switch (*acao){
                 case 1:
@@ -407,6 +409,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
             green();
             printf("Escolha uma magia:\n[1] Tiro potente (-%iMP)\n[2] Usar pocao de cura (+%iHP)\n[3] Tiro enfraquecedor (-%iMP)\n[4] Usar pocao magica (+%iMP)\n[Outro] Voltar\n", *manaMax, *HPMaxima, *manaMax/2, *manaMax);
             input("%i",&*acao);
+            system("cls");
             sleep(1);
             switch (*acao){
                 case 1:
@@ -492,6 +495,11 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int*player
         white();
         printf("Voce morreu. Fim de jogo.\n");
         *jogando = false;
+    } else if ((enemyHP <= 0)&&(HPAtual <= 0)) {
+        system("cls");
+        white();
+        printf("Voce morreu, mas com Honra! Fim de jogo.\n");
+        *jogando = false;
     } else if ((enemyHP <= 0)&&(*bossFinal == false)) {
         system("cls");
         white();
@@ -576,12 +584,9 @@ switch (class){
                 yellow();
                 printf("LEVEL UP! Voce recebeu:\n+4 ATK\n+10 HP\n+2 MANA\n");
                 break;
-            default:
-                red();
-                printf("Meu deus eu devo ter feito muita merda\n");
-                break;
         }
         divisor();
+        sleep(3);
         system("cls");
         if(bossFinal == true){
             printf("Voce chegou no boss final, O PROFESSOR!!!\n");
@@ -857,10 +862,10 @@ int main(){
         }
     } while (class < 1|| class > 4);
 
-    
-        system("cls");
+
         enemyIndex = rand() % nMobs;
         sleep(1);
+        system("cls");
         if(nMobs > 0){
             white();
             printf("VOCE ENCONTROU %s\n", mobs[enemyIndex]);
@@ -897,6 +902,7 @@ int main(){
                 enemyHP -= dano;
                 danoT += dano;
                 manaAtual += manaMax/10;
+                system("cls");
                 printf("VOCE USOU %s, CAUSOU %d DE DANO E RECEBEU %d DE MANA\n", atksBasicos[class], dano, manaMax/10);
                 sleep(1);
             } else if (acao == 2) {
@@ -912,6 +918,7 @@ int main(){
             } else if (acao ==3) { //defender
                 defesa += HPMaxima/2; //usada na formula de dano recebido, escala com hp maxímo
                 manaAtual += manaMax*2/5;
+                system("cls");
                 printf("VOCÊ SE DEFENDEU DE %d DE DANO E RECEBEU +%d MANA\n", defesa, manaMax*2/5);
                 sleep(1);
             }  else if (acao == 4) { 
