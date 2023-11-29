@@ -3,7 +3,7 @@
 ## Descrição do Projeto
 <p align="center">Mini projeto 1 do curso de IP da graduação de Ciências da computação - UFG<p>
 
-<h4 align="center"> v1.0 Concluída ✅ Atualmente em hiato...<h4>
+<h4 align="center"> v1.0 Concluída ✅ v2.0 em desenvolvimento 👨🏾‍💻<h4>
 
 ##
 
