@@ -794,7 +794,7 @@ int main(){
 
     //Start
     abertura();
-
+    system("cls");
     //Escolha de classes
     do{
         white();
@@ -856,7 +856,7 @@ int main(){
     } while (class < 1|| class > 4);
 
     
-
+        system("cls");
         enemyIndex = rand() % nMobs;
         sleep(1);
         if(nMobs > 0){
@@ -870,6 +870,7 @@ int main(){
         }
         
         do {
+            system("cls");
             divisor();
             status(HPAtual, HPMaxima, manaMax, manaAtual, playerLvl, class, atkBase, res, forca, pocaoHP, pocaoMP, contraataque);
             divisor();
@@ -897,6 +898,11 @@ int main(){
                 printf("VOCE USOU %s, CAUSOU %d DE DANO E RECEBEU %d DE MANA\n", atksBasicos[class], dano, manaMax/10);
                 sleep(1);
             } else if (acao == 2) {
+                system("cls");
+                divisor();
+                status(HPAtual, HPMaxima, manaMax, manaAtual, playerLvl, class, atkBase, res, forca, pocaoHP, pocaoMP, contraataque);
+                divisor();
+                hpEnemy(enemyHP, enemyHPMax, enemyLvl, mobs, enemyIndex, bossFinal, burnMago);
                 magia(class, &HPMaxima, &HPAtual, &manaMax, &manaAtual, &manaTemp, manaTempMax, &defesa, &res, &forca, &acao, dano, &atkBase, &enemyHP, &contraataque, &burnMago, &stun, &pocaoHP, &pocaoMP, &danoT);
                 if (acao > 4 || acao <1) {
                 continue;
@@ -910,8 +916,8 @@ int main(){
                 jogando = false;
                 sleep(1);
             } else continue;
-
             loading();
+            system("cls");
             if (jogando == false) break;
             if (HPAtual > HPMaxima) HPAtual = HPMaxima;    // impedir de HP e mp de passar do limite, dano negativo e HP negativo
             if (manaAtual > manaMax) manaAtual = manaMax;  
