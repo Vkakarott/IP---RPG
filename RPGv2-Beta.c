@@ -209,7 +209,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                     *enemyHP -= dano * 4;
                     *danoT += dano * 4;
                     red();
-                    printf("VOCÊ USOU GOLPE CICLONE E GASTOU %d MANA!\n", *manaMax*3/4);
+                    printf("VOCE USOU GOLPE CICLONE E GASTOU %d MANA!\n", *manaMax*3/4);
                     sleep(1);
                     for (int i = 0; i < 4; i ++) {
                     printf("DANO: %i\n", dano);
@@ -487,12 +487,13 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
 //Verificar se a batalha acabou e o resultado
 void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int*playerLvl, int *enemyLvl, int* exp, int *contraataque, int *burnMago, int *enemyIndex, int *nMobs, const char *mobs[], bool *bossFinal) {
     sleep(1);
-
     if (HPAtual <= 0) {
+        system("cls");
         white();
         printf("Voce morreu. Fim de jogo.\n");
         *jogando = false;
     } else if ((enemyHP <= 0)&&(*bossFinal == false)) {
+        system("cls");
         white();
         int Xp = 10 * (*enemyLvl + 1);
         *exp += Xp;
@@ -514,6 +515,7 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int*player
         *levelUp = true;
         sleep(1);
     } else if ((enemyHP <= 0)&&(*bossFinal == true)) {
+        system("cls");
         white();
         printf("VOCE DERROTOU O SER MAIS FORTE DE TODOS, O PROFESSOR\n");
         sleep(1);
@@ -580,7 +582,7 @@ switch (class){
                 break;
         }
         divisor();
-
+        system("cls");
         if(bossFinal == true){
             printf("Voce chegou no boss final, O PROFESSOR!!!\n");
             loading();
@@ -917,7 +919,6 @@ int main(){
                 sleep(1);
             } else continue;
             loading();
-            system("cls");
             if (jogando == false) break;
             if (HPAtual > HPMaxima) HPAtual = HPMaxima;    // impedir de HP e mp de passar do limite, dano negativo e HP negativo
             if (manaAtual > manaMax) manaAtual = manaMax;  
