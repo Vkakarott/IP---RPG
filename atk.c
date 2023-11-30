@@ -1,44 +1,105 @@
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <termios.h>
+#include <fcntl.h>
 
 void red() {
-    printf("\x1b[31m");  // ANSI escape code for red text
+    printf("\033[0;31m");
 }
-
 void green() {
-    printf("\x1b[32m");  // ANSI escape code for green text
+    printf("\033[0;32m");
 }
-
 void white() {
-    printf("\x1b[0m");   // ANSI escape code for resetting text color to default
+    printf("\033[0;37m");
+}
+void yellow() {
+    printf("\033[0;33m");
 }
 
-void att() {
-    char brAtk[51] = "▭▭▭▭■▭▭▭▭▭▭▭▭▭▭▭▭▭▭▭▣▣▣□□▣▣▣▭▭▭▭▭▭▭▭▭▭▭▭▭▭■▭▭▭▭";
-    char formattedString[51 * 7 + 1];  // 51 characters with color codes, plus null terminator
-    int i;
-    int offset = 0;
+int kbhit() {
+    struct termios oldt, newt;
+    int ch;
+    int oldf;
 
-    for (i = 0; i < 50; i++) {
-        if (i == 4 || i == 45) {
-            red();
-            offset += sprintf(formattedString + offset, "\x1b[31m%c", brAtk[i]);
-        } else if (i > 19 && i < 27) {
-            green();
-            offset += sprintf(formattedString + offset, "\x1b[32m%c", brAtk[i]);
-        } else {
-            white();
-            offset += sprintf(formattedString + offset, "\x1b[0m%c", brAtk[i]);
-        }
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+    ch = getchar();
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+    if(ch != EOF) {
+        ungetc(ch, stdin);
+        return 1;
     }
 
-    white();  // Reset text color after printing the bar
-    printf("%s\n", formattedString);
+    return 0;
+}
+
+int att() {
+    const char* men[52] = {
+        " "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","P","R","E","S","S","I","O","N","E"," ","E","N","T","E","R"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "
+    };
+    const char* curAtk[50] = {
+        " "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "
+    };
+    const char* brAtk[50] = {
+        "▭","▭","▭","▭","■","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▣","▣","▣","□","□","□","▣","▣","▣","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","■","▭","▭","▭","▭"
+    };
+    int atk = 25;
+    int i, j;
+    
+    while (1) {
+        printf("┏");
+        for(i = 0; i < 49; i++) printf("━");
+        printf("┓\n┃");
+        for (i = 0; i < 49; i++) {
+            if (i == atk) {
+                printf("\033[0;34m▼\033[0;37m");
+            } else {
+                printf("%s", curAtk[i]);
+            }
+            fflush(stdout);
+        }
+        printf("┃\n┃");
+
+        for (j = 0; j < 49; j++) {
+            if (j == 4 || j == 44) red();
+            else if (j > 19 && j < 29) green();
+            else if (j > 16 && j < 32) yellow();
+            else white();
+            
+            printf("%s", brAtk[j]);
+            fflush(stdout);
+        }
+        printf("┃\n┗");
+        for(i = 0; i < 49; i++) printf("━");
+        printf("┛\n");
+        for (i = 0; i < 51; i++) {
+            printf("%s", men[i]);
+            fflush(stdout);
+        }
+
+        usleep(50000);
+        atk++;
+        if(atk == 49) {
+            atk = 0;
+        }
+        if (kbhit()) {
+            break;  // Sai do loop se uma tecla for pressionada
+        }
+        system("clear");
+    }
+    return atk;
 }
 
 int main(){
-    printf("APERTE ENTER PARA ATACAR\n");
-    while (getchar() != '\n');
-    att();
+    printf("atk: %d\n", att());
     return 0;
 }
