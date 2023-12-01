@@ -4,6 +4,8 @@
 #include <time.h> //Tempo
 #include <unistd.h> //Sleep no linux
 #include <string.h>//Biblioteca de strings (para uso de strcmp, que compara strings)
+#include <termios.h>// Para função kbhit
+#include <fcntl.h>// Para função kbhit
 
 //Cores
 void red() {
@@ -90,16 +92,121 @@ void input(const char *arg, void *var){ //Função que recebe entrada, com um es
     printf("> ");
     if (arg[0] == '%') {
         if (arg[1] == 'i') {
-            scanf("%d", (int *)var);
+            scanf("%d%*c", (int *)var);
         } else if (arg[1] == 'f') {
-            scanf("%lf", (double *)var);
+            scanf("%lf%*c", (double *)var);
         }
     }
 }
 
+int kbhit() {
+    struct termios oldt, newt;
+    int ch;
+    int oldf;
+
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+    ch = getchar();
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+    if(ch != EOF) {
+        ungetc(ch, stdin);
+        return 1;
+    }
+
+    return 0;
+}
+
+
 void divisor(){ //Função que mostra uma linha divisoria entre blocos
     white();
     printf("------------------------------------------------------------------\n");
+}
+
+double golpe() {
+    const char* men[52] = {
+        " "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","P","R","E","S","S","I","O","N","E"," ","E","N","T","E","R"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "
+    };
+    const char* curAtk[50] = {
+        " "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "
+    };
+    const char* brAtk[50] = {
+        "▭","▭","▭","▭","■","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▣","▣","▣","□","▣","▣","▣","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","▭","■","▭","▭","▭","▭"
+    };
+    int atk = 0;
+    int i, j;
+    system("clear");
+    while (1) {
+        printf("┏");
+        for(i = 0; i < 49; i++) printf("━");
+        printf("┓\n┃");
+        for (i = 0; i < 49; i++) {
+            if (i == atk) {
+                printf("\033[0;34m▼\033[0;37m");
+            } else {
+                printf("%s", curAtk[i]);
+            }
+            fflush(stdout);
+        }
+        printf("┃\n┃");
+
+        for (j = 0; j < 49; j++) {
+            if (j == 4 || j == 44) red();
+            else if (j > 20 && j < 28) green();
+            else if (j > 17 && j < 31) yellow();
+            else white();
+            
+            printf("%s", brAtk[j]);
+            fflush(stdout);
+        }
+        printf("┃\n┗");
+        for(i = 0; i < 49; i++) printf("━");
+        printf("┛\n");
+        for (i = 0; i < 51; i++) {
+            printf("%s", men[i]);
+            fflush(stdout);
+        }
+
+        usleep(30000);
+        atk++;
+        if(atk == 49) {
+            atk = 0;
+        }
+        system("clear");
+        if (kbhit()) {
+            break;  // Sai do loop se uma tecla for pressionada
+        }
+    }
+    double crit = 0;
+    yellow();
+    if (atk == 25) {
+        printf("GOLPE CRITICO! ");
+        crit = 2;
+    }
+    else if (atk > 20 && atk < 28) {
+        printf("MUITO BOM! ");
+        crit = 1.5;
+    }
+    else if (atk > 17 && atk < 31) {
+        printf("BOM ");
+        crit = 1.2;
+    }
+    else if (atk > 3 && atk < 45) {
+        printf("ACERTOU ");
+        crit = 1;
+    }
+    else {
+        printf("ERROU! ");
+        crit = 0;
+    }
+    return crit;    
 }
 
 //Barra de status atual
@@ -206,7 +313,8 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
             case 1:
                 if (*manaAtual >= *manaMax*3/4) {
                     *manaAtual -= *manaMax*3/4;
-                    dano = 0.4 * *atkBase * (1+0.2 * *forca);
+                    double crit = golpe();
+                    dano = 0.4 * *atkBase * (1+0.2 * *forca) * crit;
                     *enemyHP -= dano * 4;
                     *danoT += dano * 4;
                     red();
@@ -226,7 +334,8 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
             case 2:
                 if (*manaAtual >= *manaMax/2) {
                     *manaAtual -= *manaMax/2;
-                    dano = 1.3 * *atkBase * (1+0.1 * *forca);
+                    double crit = golpe();
+                    dano = 1.3 * *atkBase * (1+0.1 * *forca) * crit;
                     *enemyHP -= dano;
                     *danoT += dano;
                     *HPAtual += dano/2;
@@ -278,7 +387,8 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 case 1:
                 if (*manaAtual >= *manaMax*7/10) {
                     *manaAtual -= *manaMax*7/10;
-                    dano = 1.5 * *atkBase * (1+0.2 * *res);
+                    double crit = golpe();
+                    dano = 1.5 * *atkBase * (1+0.2 * *res) * crit;
                     *danoT += dano;
                     *enemyHP -= dano;
                     cyan();
@@ -350,7 +460,8 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 case 1:
                 if(*manaAtual >= *manaMax-*manaTemp) {
                     *manaAtual -= *manaMax-*manaTemp;
-                    dano = *atkBase * (0.04 * *manaMax);
+                    double crit = golpe();
+                    dano = *atkBase * (0.04 * *manaMax) * crit;
                     *danoT += dano;
                     *enemyHP -= dano;
                     purple();
@@ -415,12 +526,15 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 case 1:
                 if (*manaAtual >= *manaMax) {
                     *manaAtual -= *manaMax;
-                    dano = 2 * *atkBase * (1+0.1 * *forca);
+                    double crit = golpe();
+                    dano = 2 * *atkBase * (1+0.1 * *forca) * crit;
                     *enemyHP -= dano;
                     *danoT += dano;
-                    *stun = true;
                     green();
-                    printf("VOCE USOU TIRO POTENTE, ATORDOANDO O INIMIGO E GASTANDO %d MANA!\n", *manaMax);
+                    if (crit == 2) {
+                        *stun = true;
+                        printf("VOCE USOU TIRO POTENTE, ATORDOANDO O INIMIGO E GASTANDO %d MANA!\n", *manaMax);
+                    } else  printf("VOCE USOU TIRO POTENTE, GASTANDO %d MANA!\n", *manaMax);
                     sleep(1);
                     printf("DANO: %i\n", dano);
                     sleep(1);
@@ -448,8 +562,9 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 case 3:
                 if (*manaAtual >= *manaMax/2) {
                     *manaAtual -= *manaMax/2;
+                    double crit = golpe();
                     *res += *manaMax/4;
-                    dano = 1.3 * *atkBase * (1+0.1 * *forca);
+                    dano = 1.3 * *atkBase * (1+0.1 * *forca) * crit;
                     *danoT += dano;
                     *enemyHP -= dano;
                     green();
@@ -895,14 +1010,19 @@ int main(){
             if(class==4) green();
 
             if(acao == 1){
-                if (class==1) dano = atkBase * (1+0.1*forca);
-                if (class==2) dano = atkBase * (1+0.05*res);
-                if (class==3) dano = atkBase * (1+0.015*manaMax);
-                if (class==4) dano = atkBase * 1.2 * (1+0.1*forca);
+                double crit = golpe();
+                if (class==1) dano = atkBase * (1+0.1*forca) * crit;
+                if (class==2) dano = atkBase * (1+0.05*res) * crit;
+                if (class==3) dano = atkBase * (1+0.015*manaMax) * crit;
+                if (class==4) dano = atkBase * 1.2 * (1+0.1*forca) * crit;
                 enemyHP -= dano;
                 danoT += dano;
                 manaAtual += manaMax/10;
                 system("clear");
+                if(class==1) red();
+                if(class==2) cyan();
+                if(class==3) purple();
+                if(class==4) green();
                 printf("VOCE USOU %s, CAUSOU %d DE DANO E RECEBEU %d DE MANA\n", atksBasicos[class], dano, manaMax/10);
                 sleep(1);
             } else if (acao == 2) {
