@@ -328,6 +328,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 } else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -348,6 +349,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 } else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 break;
@@ -363,6 +365,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 } else {
                     blue();
                     printf("Sem HP suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -400,6 +403,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 } else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -414,6 +418,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -428,6 +433,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -443,6 +449,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -473,6 +480,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -488,6 +496,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -502,6 +511,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Voce ja esta sobrecarregado!\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -542,6 +552,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -556,6 +567,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Voce nao tem uma pocao\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -576,6 +588,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 } else {
                     blue();
                     printf("Sem mana suficiente\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
@@ -591,6 +604,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 }  else {
                     blue();
                     printf("Voce nao tem uma pocao\n");
+                    sleep(1);
                     *acao = 5;
                     break;
                 }
