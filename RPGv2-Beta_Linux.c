@@ -287,6 +287,65 @@ void hpEnemy(int enemyHP, int enemyHPMax, int enemyLvl, const char *mobs[], int 
 
 }
 
+void menu(int class, bool* jogando) {
+    while (1) {
+        int acao = 0;
+        system("clear");
+        const char* dica1[] = {"É recomendado usar Furia no inicio da batalha!", "Quanto mais vida máxima, mais FOR é ganha ao usar Furia!", "O Sifao cura mais dependendo do quanto dano você da!",};
+        const char* dica2[] = {"A postura divina reduz a cada turno que o inimigo te ataca!", "A postura divina é mais efetiva com mais RES", "Ambas FOR e RES aumentam o seu dano!",};
+        const char* dica3[] = {"É recomendado usar Sobrecarga no inicio da batalha!", "Furia dos espiritos cura e da dano, porem reduz a cada turno", "O seu dano nao e aumentado com FOR, mas sim com MPMAX!",};
+        const char* dica4[] = {"Acertar golpe critico com o Tiro Potente atordoa seu inimigo!", "Sua classe nao consegue ganhar FOR a nao ser por meio de itens!", "A flecha enfraquecedora reduz o dano que o inimigo da!"};
+        if(class==1) red();
+        if(class==2) cyan();
+        if(class==3) purple();
+        if(class==4) green();
+        printf("========= MENU =========\n");
+        printf("SELECIONE UMA OPCAO:\n");
+        printf("[1] VOLTAR\n");
+        printf("[2] DICA\n");
+        printf("[3] INVENTARIO\n");
+        printf("[4] SAIR DO JOGO\n");
+
+        input("%i", &acao);
+
+        if (acao == 1){
+            system("clear");
+            break;
+        } else if (acao == 2){
+            if(class==1) red();
+            if(class==2) cyan();
+            if(class==3) purple();
+            if(class==4) green();
+            if(class == 1){
+                system("clear");
+                printf("%s\nPressione Enter para voltar!\n", dica1[rand() % 3]);
+            }
+            if(class == 2){
+                system("clear"); 
+                printf("%s\nPressione Enter para voltar!\n", dica2[rand() % 3]);
+                loading();
+            }
+            if(class == 3){
+                system("clear");
+                printf("%s\nPressione Enter para voltar!\n", dica3[rand() % 3]);
+            }
+            if(class == 4){
+                system("clear");
+                printf("%s\nPressione Enter para voltar!\n", dica4[rand() % 3]);
+            }
+            getchar();
+            continue;
+        } else if (acao == 3){
+            system("clear");
+            break;
+        } else if(acao == 4){
+            *jogando = false;
+            break;
+        } else continue;
+        sleep(1);
+    }
+}
+
 void result(int danoT, int danoR, int exp){
     divisor();
     printf("|                       RESUMO DA PARTIDA                        |\n");
@@ -391,7 +450,7 @@ void magia(int class, int* HPMaxima, int* HPAtual, int* manaMax, int* manaAtual,
                 if (*manaAtual >= *manaMax*7/10) {
                     *manaAtual -= *manaMax*7/10;
                     double crit = golpe();
-                    dano = 1.5 * *atkBase * (1+0.2 * *res) * crit;
+                    dano = 1.5 * *atkBase * (1+0.2 * *res) * (1+0.2 * *forca) * crit;
                     *danoT += dano;
                     *enemyHP -= dano;
                     cyan();
@@ -1015,7 +1074,7 @@ int main(){
             if(class==2) cyan();
             if(class==3) purple();
             if(class==4) green();
-            printf("SELECIONE A ACAO\n[1] ATAQUE BASICO\n[2] MAGIA\n[3] DEFENDER\n[4] SAIR\n");     
+            printf("SELECIONE A ACAO\n[1] ATAQUE BASICO\n[2] MAGIA\n[3] DEFENDER\n[4] MENU\n");     
             input("%i", &acao);
             sleep(1);
             if(class==1) red();
@@ -1026,7 +1085,7 @@ int main(){
             if(acao == 1){
                 double crit = golpe();
                 if (class==1) dano = atkBase * (1+0.1*forca) * crit;
-                if (class==2) dano = atkBase * (1+0.05*res) * crit;
+                if (class==2) dano = atkBase * (1+0.05*res) * (1+0.2*forca) * crit;
                 if (class==3) dano = atkBase * (1+0.015*manaMax) * crit;
                 if (class==4) dano = atkBase * 1.2 * (1+0.1*forca) * crit;
                 enemyHP -= dano;
@@ -1056,8 +1115,10 @@ int main(){
                 printf("VOCÊ SE DEFENDEU DE %d DE DANO E RECEBEU +%d MANA\n", defesa, manaMax*2/5);
                 sleep(1);
             }  else if (acao == 4) { 
-                jogando = false;
+                menu(class, &jogando);
                 sleep(1);
+                if (!jogando) break;
+                continue;
             } else continue;
             loading();
             if (jogando == false) break;
