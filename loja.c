@@ -42,9 +42,9 @@ void loja(int inventario[4]) {
         } else break;
         printf("Voce comprou %s!\n", items[acao-1]);
         sleep(2);
-        system("cls");
+        system("clear");
     }
-    printf("Voce decidiu sair da loja\n");
+    printf("Voce decidiu sair da loja\n ");
 }
 int main() {
     int inventario[4];
