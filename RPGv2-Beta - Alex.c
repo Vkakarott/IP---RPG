@@ -800,7 +800,7 @@ int main(){
     const char *atksBasicos[] = {NULL, "CORTE COM ESPADA", "GOLPE COM ESCUDO", "MISSIL MAGICO", "TIRO FRACO"};
 
     //Start
-    // abertura();
+    abertura();
     system("cls");
     //Escolha de classes
     do{
