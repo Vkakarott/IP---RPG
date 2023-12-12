@@ -29,25 +29,17 @@ int kbhit() {
     return 0;
 }
 
-void menu() {
-    const char* menu[50][10] = {
-        {"========== MENU =========", " "},
-        {"SELECIONE UMA OPCAO:     ", " "},
-        {" ", "   VOLTAR                "},
-        {" ", "   DICA                  "},
-        {" ", "   INVENTARIO            "},
-        {" ", "   SAIR DO JOGO          "},
-        {"=========================", " "}
-    };
-
-    int s = 2;
+int menu(char *titulo, int numOpcoes, char *opcoes[]) {
+    int s = 0;
+    int f = numOpcoes - 1;
     char input;
 
     while (1) {
         system("clear");
-        for (int i = 0; i < 7; i++) {
-            if (i == s) printf("▶ %s", menu[i][1]);
-            else printf("%s%s", menu[i][0], menu[i][1]);
+        printf("%s\n", titulo);
+        for (int i = 0; i < numOpcoes; i++) {
+            if (i == s) printf("▶  %s", opcoes[i]);
+            else printf("  %s", opcoes[i]);
             printf("\n");
         }
 
@@ -57,21 +49,32 @@ void menu() {
 
         input = getchar();
 
-        if (input == 'w') {
-            if (s == 2) s = 5;
-            else s--;
-        } else if (input == 's') {
-            if (s == 5) s = 2;
-            else s++;
-        } else if (input == '\n') {
-            break;
+        switch (input) {
+            case 'w':
+            case 65: // Código ASCII para a seta para cima
+                if (s == 0) s = f;
+                else s--;
+                break;
+            case 's':
+            case 66: // Código ASCII para a seta para baixo
+                if (s == f) s = 0;
+                else s++;
+                break;
+            case '\n':
+                return s;
         }
     }
-
-    printf("%s\n", menu[s][1]);
+    return s;
 }
 
 int main() {
-    menu();
+    char *opcoes[4] = {
+        "Jogar",
+        "Instruções",
+        "Créditos",
+        "Sair"
+    };
+
+    menu("MENU PRINCIPAL", 4, opcoes);
     return 0;
 }
