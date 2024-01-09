@@ -8,27 +8,13 @@
 #include <fcntl.h>// Para função kbhit
 
 //Cores
-void red() {
-    printf("\033[0;31m");
-}
-void green() {
-    printf("\033[0;32m");
-}
-void yellow() {
-    printf("\033[0;33m");
-}
-void blue() {
-    printf("\033[0;34m");
-}
-void purple() {
-    printf("\033[0;35m");
-}
-void cyan() {
-    printf("\033[0;36m");
-}
-void white() {
-    printf("\033[0;37m");
-}
+void red() { printf("\033[0;31m"); }
+void green() { printf("\033[0;32m"); }
+void yellow() { printf("\033[0;33m"); }
+void blue() { printf("\033[0;34m"); }
+void purple() { printf("\033[0;35m"); }
+void cyan() { printf("\033[0;36m"); }
+void white() { printf("\033[0;37m"); }
 
 void loading(){ //Função que mostra os 3 pontinhos
     white();
@@ -42,46 +28,45 @@ void loading(){ //Função que mostra os 3 pontinhos
 
 void abertura() {
     const char *lines[] = {
-        "                                                          ",
-        "         _____                  _____     _____    _______",
-        "|   /   |     |   |\\      /|   |     |   |     |      |  ",
-        "|  /    |     |   | \\    / |   |     |   |     |      |  ",
-        "| /     |     |   |  \\  /  |   |_____|   |     |      |  ",
-        "|/      |     |   |   \\/   |   |_____    |_____|      |  ",
-        "|\\      |     |   |        |   |     |   |     |      |  ",
-        "| \\     |     |   |        |   |     |   |     |      |  ",
-        "|  \\    |     |   |        |   |     |   |     |      |  ",
-        "|   \\   |_____|   |        |   |_____|   |     |      |  ",
-        "                                                          ",
-        " _____     _____     _____                                ",
-        "|     |   |     |   |                                     ",
-        "|     |   |     |   |                                     ",
-        "|_____|   |     |   |                                     ",
-        "| \\       |_____|   |   ___                              ",
-        "|  \\      |         |     |                              ",
-        "|   \\     |         |     |                              ",
-        "|    \\    |         |     |                              ",
-        "|     \\   |         |_____|                              "
+        "                                                                                                    ",
+        "     __                      __            __                                                       ",
+        "    / /__ ____   ____ ___   / /_   ____ _ / /_ ___                                                  ",
+        "   / //_// __ \\ / __ `__ \\ / __ \\ / __ `// __// _ \\                                             ",
+        "  / ,<  / /_/ // / / / / // /_/ // /_/ // /_ /  __/                                                 ",
+        " /_/|_| \\____//_/ /_/ /_//_.___/ \\__,_/ \\__/ \\___/                                              ",
+        "                                                                                                    ",
+        "                                                                                                    ",
+        "                                                                                                    ",
+        "                                  ██▀███   ██▓███    ▄████                                          ",
+        "                                 ▓██ ▒ ██▒▓██░  ██▒ ██▒ ▀█                                          ",
+        "                                 ▓██ ░▄█ ▒▓██░ ██▓▒▒██░▄▄                                           ",
+        "                                 ▒██▀▀█▄  ▒██▄█▓▒ ▒░▓█  ██                                          ",
+        "                                 ░██▓ ▒██▒▒██▒ ░  ░░▒▓███▀▒                                         ",
+        "                                 ░ ▒▓ ░▒▓░▒▓▒░ ░  ░ ░▒   ▒                                          ",
+        "                                   ░▒ ░ ▒░░▒ ░       ░   ░                                          ",
+        "                                   ░░   ░ ░░       ░ ░   ░                                          ",
+        "                                    ░                    ░                                          ",
+        "                                                                                                    "
     };
 
-    int numLinhas = 20;
-    int numCol = 59;
+    int numLinhas = 19;
+    int numCol = 100;
     int lin;
     int col;
-    
 
     for (lin = 0; lin < numLinhas; lin++) {
         for (col = 0; col < numCol; col++) {
             if (lines[lin][col] != '\0') {
-                printf("\033[0;34m%c", lines[lin][col]);
+                printf("%c", lines[lin][col]);
             } else {
                 printf(" ");
             }
             fflush(stdout);
-            usleep(1000); // 0.001 segundos
+            usleep(1000); // 0.001 seconds
         }
         printf("\n");
     }
+
     printf("\n");
     printf("\033[0;32mPRESSIONE ENTER PARA JOGAR\n");
     getchar();
@@ -728,8 +713,36 @@ void checkWin(int HPAtual, int enemyHP, bool *jogando, bool *levelUp, int*player
         white();
         printf("VOCE DERROTOU O SER MAIS FORTE DE TODOS, O PROFESSOR\n");
         sleep(1);
-        printf("AGORA VAI TER FERIADO!\n");
-        *jogando = false;
+        printf("AGORA VAI TER FERIADO!\nPOREM, AINDA NAO ACABOU, DESEJA EXTENDER O FERIADO?\n0 - NAO\n1 - SIM\n");
+        int acao;
+        input("%i", &acao);
+        if (acao == 0) {
+            *jogando = false;
+        } else {
+            system("clear");
+            int Xp = 10 * (*enemyLvl + 1);
+            int Dindin = (10 + rand() % 6) * (double)(1 + *enemyLvl * 0.4);
+            *nMobs = 4;
+            *exp += Xp;
+            *moedas += Dindin;
+            mobs[0] = "TROLL";
+            mobs[1] = "BRUXA";
+            mobs[2] = "GOLEM";
+            mobs[3] = "DRAGAO";
+            printf("Voce derrotou o inimigo! \033[0;33m(+%d XP) (+%d $)\n", Xp, Dindin);
+            int mobsCount = *nMobs;
+            for (int i = *enemyIndex; i < mobsCount - 1; i++) {
+                mobs[i] = mobs[i + 1];
+            }
+            mobs[mobsCount - 1] = NULL;
+            (*nMobs)--;
+            *playerLvl += 1;
+            *enemyLvl += *playerLvl;
+            *contraataque = 0;
+            *burnMago = 0;
+            *bossFinal = false;
+            *levelUp = true;
+        }
     }
 }
 
@@ -783,7 +796,7 @@ void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, i
 divisor();
 switch (class){
             case 1:
-                *atkBase = 10+3*playerLvl;
+                *atkBase = 100+3*playerLvl;
                 *res = 1 + 3 * inventario[1];
                 *forca = 2 + 1*playerLvl + 4 * inventario[0];
                 *HPMaxima = 50 + 10*playerLvl + 30 * inventario[3];
@@ -838,9 +851,6 @@ switch (class){
             loja(inventario, moedas, forca, res, manaMax, manaAtual, HPMaxima, HPAtual);
             printf("Voce chegou no boss final, O PROFESSOR!!!\n");
             loading();
-            *enemyHPMax = 300;
-            *enemyHP = *enemyHPMax;
-            *enemyBaseAtk = 20;
         } else {
             *enemyIndex = rand() % nMobs;
             sleep(1);
@@ -848,10 +858,10 @@ switch (class){
             printf("VOCE ENCONTROU %s\n", mobs[*enemyIndex]);
             sleep(1);
             loading();
-            *enemyHPMax = 75 + 15 * enemyLvl;
-            *enemyHP = *enemyHPMax;
-            *enemyBaseAtk = 10 + 2 * enemyLvl;
         }
+        *enemyHPMax = 75 + 15 * enemyLvl;
+        *enemyHP = *enemyHPMax;
+        *enemyBaseAtk = 10 + 2 * enemyLvl;
 }
 
 
@@ -1061,7 +1071,7 @@ int main(){
         sleep(1);
         switch (class){ //Cada classe ganha atributos diferentes
             case 1:
-                atkBase = 10;
+                atkBase = 100;
                 res = 1;
                 forca = 2;
                 HPMaxima = 50;
