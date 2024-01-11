@@ -796,7 +796,7 @@ void escalamento(int class, int *atkBase, int *res, int* forca, int* HPMaxima, i
 divisor();
 switch (class){
             case 1:
-                *atkBase = 100+3*playerLvl;
+                *atkBase = 10+3*playerLvl;
                 *res = 1 + 3 * inventario[1];
                 *forca = 2 + 1*playerLvl + 4 * inventario[0];
                 *HPMaxima = 50 + 10*playerLvl + 30 * inventario[3];
@@ -1071,7 +1071,7 @@ int main(){
         sleep(1);
         switch (class){ //Cada classe ganha atributos diferentes
             case 1:
-                atkBase = 100;
+                atkBase = 10;
                 res = 1;
                 forca = 2;
                 HPMaxima = 50;
