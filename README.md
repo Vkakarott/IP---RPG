@@ -16,7 +16,12 @@
 - [x] Ataques personalizados
 - [x] Sistema de níveis
 - [x] Boss final
-
+### Atualizacao V2
+- [x] Loja com itens logo antes do Boss Final
+- [x] Menu de pausa
+- [x] Sistema de golpe com teste de pericia
+- [x] Jogo "infinito"
+- [x] Nova logo de inicio de jogo
 ##
 
 ### 🛠️ TECNOLOGIAS
