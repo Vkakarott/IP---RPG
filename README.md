@@ -3,7 +3,7 @@
 ## Descrição do Projeto
 <p align="center">Mini projeto 1 do curso de IP da graduação de Ciências da computação - UFG<p>
 
-<h4 align="center"> v1.0 Concluída ✅ v2.0 em desenvolvimento 👨🏾‍💻<h4>
+<h4 align="center"> v2.0 Concluída ✅ <h4>
 
 ##
 
@@ -35,6 +35,8 @@
     - <time.h> -> definir tempo (necessario para função rand)
     - <unistd.h> -> sleep no linux || <windows.h> -> sleep windons
     - <string.h> -> manipulação de strings
+    - <termios.h> -> configurar e controlar dispositivos terminais
+    - <fcntl.h> -> funcionalidade para operações de controle de arquivo
  
  <h3>FUNÇÕES</h3>
  
@@ -51,6 +53,11 @@
     - else()
     - switch()
     - strcmp()
+    - system()
+
+## Versoes
+ - Versao 1.0 (<a href="https://github.com/Vkakarott/IP---RPG/tree/a2f9fc0abb9d3ea40db7196000d9668c8134c7d1">v1</a>)
+ - Versao 2.0 (<a href="https://github.com/Vkakarott/IP---RPG">v2</a>)
   
 ## Autores
 <div align="center">
