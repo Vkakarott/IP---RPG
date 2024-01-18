@@ -56,8 +56,8 @@
     - system()
 
 ## Versoes
-<a href="https://github.com/Vkakarott/IP---RPG/tree/a2f9fc0abb9d3ea40db7196000d9668c8134c7d1">Versao 1.0</a>
-<a href="">Versao 2.0</a>
+ - Versao 1.0 (<a href="https://github.com/Vkakarott/IP---RPG/tree/a2f9fc0abb9d3ea40db7196000d9668c8134c7d1">v1</a>)
+ - Versao 2.0 (<a href="https://github.com/Vkakarott/IP---RPG">v2</a>)
   
 ## Autores
 <div align="center">
