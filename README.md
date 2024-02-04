@@ -1,7 +1,7 @@
 <h1 align="center">KOMBAT RPG<h1>
 
 ## Descrição do Projeto
-<p align="center">Mini projeto 1 do curso de IP da graduação de Ciências da computação - UFG<p>
+<p align="center">Mini projeto 1 e 2 do curso de IP da graduação de Ciências da computação - UFG<p>
 
 <h4 align="center"> v2.0 Concluída ✅ <h4>
 
